@@ -1,0 +1,422 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fake_vision/resources/auth_methods.dart';
+import 'package:fake_vision/responsive/mobile_screen_layout.dart';
+import 'package:fake_vision/screens/edit_profile_screen.dart';
+import 'package:fake_vision/screens/login_screen.dart';
+import 'package:fake_vision/utils/app_export.dart';
+import 'package:fake_vision/utils/colors.dart';
+import 'package:fake_vision/utils/utils.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+class ProfileScreen extends StatefulWidget {
+  final String uid;
+  const ProfileScreen({Key? key, required this.uid}) : super(key: key);
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  var userData = {};
+  static String backgroundImg = 'Images/Fake.png';
+  static String backBtn = 'Images/img_material_symbol_onprimary.svg';
+  int postLength = 0;
+  bool _isLoading = false;
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  getData() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      var userSnap = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.uid)
+          .get();
+
+      if (userSnap.exists) {
+        // get post length
+        var postSnap = await FirebaseFirestore.instance
+            .collection('posts')
+            .where('uid', isEqualTo: widget.uid)
+            .get();
+
+        setState(() {
+          postLength = postSnap.docs.length;
+          userData = userSnap.data()!;
+          _isLoading = false;
+        });
+      } else {
+        // Handle the case where the user data doesn't exist
+        setState(() {
+          _isLoading = false;
+        });
+        showSnackBar(
+          context,
+          'User data not found',
+        );
+      }
+    } catch (e) {
+      // Handle errors during data fetching
+      setState(() {
+        _isLoading = false;
+      });
+      showSnackBar(
+        context,
+        'Error fetching user data: $e',
+      );
+    }
+  }
+
+  void signoutUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+    await AuthMethods().signOut();
+    if (context.mounted) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const LoginScreen(),
+        ),
+      );
+    }
+  }
+
+  void editProfile() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    if (context.mounted) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => EditProfileScreen(),
+        ),
+      );
+    }
+  }
+
+  void scan() async {
+    // set loading to true
+    setState(() {
+      _isLoading = true;
+    });
+
+    // Navigate to the ProfileScreen
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+          builder: (context) => ProfileScreen(
+                uid: FirebaseAuth.instance.currentUser!.uid,
+              )),
+    );
+
+    // set loading to false after navigation
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _isLoading
+        ? const Center(
+            child: CircularProgressIndicator(),
+          )
+        : SafeArea(
+            child: Scaffold(
+              appBar: AppBar(
+                systemOverlayStyle: SystemUiOverlayStyle(
+                  statusBarColor: colorStatusBar, // Set the status bar color
+                  statusBarIconBrightness:
+                      Brightness.light, // Status bar icons' color
+                ),
+                automaticallyImplyLeading: false,
+                elevation: 5.0, //shadow to app bar
+                flexibleSpace: Stack(
+                  children: [
+                    // Clipping the background image to the bounds of the AppBar
+                    ClipRect(
+                      child: Positioned.fill(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage('Images/bg2.jpg'),
+                              fit: BoxFit.cover,
+                              colorFilter: ColorFilter.mode(
+                                Color.fromARGB(255, 34, 34, 34).withOpacity(
+                                    0.5), // This controls the black tint
+                                BlendMode.darken,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    // Actual AppBar content
+                    Padding(
+                      padding: const EdgeInsets.only(left: 1.0, top: 12),
+                      child: Row(
+                        children: [
+                          IconButton(
+                            icon: Icon(
+                              Icons.arrow_back,
+                              color: whiteColor,
+                              size: 20,
+                            ),
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MobileScreenLayout()),
+                              );
+                            },
+                          ),
+                          SizedBox(width: 8.0), // Add some spacing
+                          Text(
+                            "Profile",
+                            style: TextStyle(
+                              fontSize: 21,
+                              color: whiteColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              body: Container(
+                width: double.maxFinite,
+                child: Column(
+                  children: [
+                    _buildProfileImg(context),
+                    SizedBox(height: 9.v),
+                    Text(
+                      userData['username'],
+                      style: CustomTextStyles.titleMediumPrimary,
+                    ),
+                    SizedBox(height: 7.v),
+                    Text(
+                      userData['bio'],
+                      style: theme.textTheme.labelLarge,
+                    ),
+                    SizedBox(height: 2.v),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 129.h),
+                      ),
+                    ),
+                    SizedBox(height: 11.v),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 74.h),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Spacer(
+                            flex: 50,
+                          ),
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              buildStatColumn(postLength, "posts"),
+                            ],
+                          ),
+                          Spacer(
+                            flex: 50,
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 13.v),
+                    Visibility(
+                      visible:
+                          FirebaseAuth.instance.currentUser!.uid == widget.uid,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          InkWell(
+                            onTap: editProfile,
+                            child: Container(
+                              alignment: Alignment.center,
+                              height: 30,
+                              width: 100,
+                              margin: const EdgeInsets.only(top: 12, left: 70),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(25),
+                                gradient: LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    colors: [
+                                      Color.fromRGBO(
+                                          53, 102, 172, 1), // light blue
+                                      Color.fromARGB(
+                                          255, 106, 175, 169) // dark blue
+                                    ]),
+                              ),
+                              child: !_isLoading
+                                  ? Text(
+                                      'Edit Profile',
+                                      style: theme.textTheme.titleSmall,
+                                    )
+                                  : const CircularProgressIndicator(
+                                      color: primaryColor,
+                                    ),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: signoutUser,
+                            child: Container(
+                              alignment: Alignment.center,
+                              height: 30,
+                              width: 100,
+                              margin: const EdgeInsets.only(top: 12, right: 70),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(25),
+                                gradient: LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    colors: [
+                                      Color.fromRGBO(
+                                          53, 102, 172, 1), // light blue
+                                      Color.fromARGB(
+                                          255, 106, 175, 169) // dark blue
+                                    ]),
+                              ),
+                              child: !_isLoading
+                                  ? Text(
+                                      'Sign out',
+                                      style: theme.textTheme.titleSmall,
+                                    )
+                                  : const CircularProgressIndicator(
+                                      color: primaryColor,
+                                    ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 28.v),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        left: 31.h,
+                        right: 80.h,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(top: 1.v, left: 0.1),
+                            child: Text(
+                              "Posts",
+                              style: CustomTextStyles.titleSmallPrimary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 3.v),
+                    Divider(
+                      indent: 5.h,
+                      endIndent: 5.h,
+                      color: Colors.grey,
+                    ),
+                    FutureBuilder(
+                      future: FirebaseFirestore.instance
+                          .collection('posts')
+                          .where('uid', isEqualTo: widget.uid)
+                          .get(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+
+                        return GridView.builder(
+                          shrinkWrap: true,
+                          itemCount: (snapshot.data! as dynamic).docs.length,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            crossAxisSpacing: 5,
+                            mainAxisSpacing: 1.5,
+                            childAspectRatio: 1,
+                          ),
+                          itemBuilder: (context, index) {
+                            DocumentSnapshot snap =
+                                (snapshot.data! as dynamic).docs[index];
+
+                            return SizedBox(
+                              child: Image(
+                                image: NetworkImage(snap['postUrl']),
+                                fit: BoxFit.cover,
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    )
+                  ],
+                ),
+              ),
+            ),
+          );
+  }
+
+  Column buildStatColumn(int num, String label) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          num.toString(),
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.only(top: 4),
+          child: Text(
+            label,
+            style: const TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w400,
+              color: Colors.grey,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// Section Widget
+  Widget _buildProfileImg(BuildContext context) {
+    return SizedBox(
+      height: 132.v,
+      width: double.maxFinite,
+      child: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          CircleAvatar(
+            backgroundColor: Colors.grey,
+            backgroundImage: NetworkImage(
+              userData['photoUrl'],
+            ),
+            radius: 50,
+          ),
+        ],
+      ),
+    );
+  }
+}

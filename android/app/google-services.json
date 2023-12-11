@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "278024505043",
+    "project_id": "fakevisionfyp",
+    "storage_bucket": "fakevisionfyp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:278024505043:android:8db4e7bece565d17117626",
+        "android_client_info": {
+          "package_name": "com.example.fake_vision"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBaueYSLuzWiBXTRf3xC_fjui7esR-X-5M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
