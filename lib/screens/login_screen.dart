@@ -1,7 +1,4 @@
 import 'package:fake_vision/resources/auth_methods.dart';
-import 'package:fake_vision/responsive/mobile_screen_layout.dart';
-import 'package:fake_vision/responsive/responsive_layout_screen.dart';
-import 'package:fake_vision/responsive/web_screen_layout.dart';
 import 'package:fake_vision/screens/sign_up_screen.dart';
 import 'package:fake_vision/utils/colors.dart';
 import 'package:fake_vision/utils/global_variables.dart';
@@ -43,23 +40,18 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _isLoading = true;
     });
-    String res = await AuthMethods().loginUser(
-        email: _emailController.text, password: _passwordController.text);
-    if (res == 'success') {
-      if (context.mounted) {
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-              builder: (context) => const ResponsiveLayout(
-                mobileScreenLayout: MobileScreenLayout(),
-                webScreenLayout: WebScreenLayout(),
-              ),
-            ),
-            (route) => false);
 
-        setState(() {
-          _isLoading = false;
-        });
-      }
+    String res = await AuthMethods().loginUser(
+      email: _emailController.text,
+      password: _passwordController.text,
+    );
+
+    if (res == 'success') {
+      successDialogBox(context, "You have successfully logged in");
+
+      setState(() {
+        _isLoading = false;
+      });
     } else {
       setState(() {
         _isLoading = false;

@@ -56,6 +56,9 @@ dependencies:
   gauge_indicator: ^0.4.3
   syncfusion_flutter_gauges: ^23.2.7
   anim_search_bar: ^2.0.3
+  awesome_dialog: ^3.1.0
+  
+ 
 
 
   
