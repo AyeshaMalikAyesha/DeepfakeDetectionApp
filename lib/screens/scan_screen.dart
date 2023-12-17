@@ -98,12 +98,16 @@ class _ScanScreenState extends State<ScanScreen> {
                   ),
                 ),
               ),
+             
+              const SizedBox(
+                height: 80,
+              ),
               Text(
                 "Place a Video link or Upload Image/Video",
                 style: theme.textTheme.bodyMedium,
               ),
               const SizedBox(
-                height: 90,
+                height: 20,
               ),
               Container(
                 decoration: BoxDecoration(

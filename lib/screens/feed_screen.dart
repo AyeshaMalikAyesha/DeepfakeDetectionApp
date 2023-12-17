@@ -71,15 +71,6 @@ class _FeedScreenState extends State<FeedScreen> {
                   ),
                 ],
               ),
-              actions: [
-                IconButton(
-                  icon: const Icon(
-                    Icons.chat,
-                    color: primaryColor,
-                  ),
-                  onPressed: () {},
-                ),
-              ],
             ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance.collection('posts').snapshots(),

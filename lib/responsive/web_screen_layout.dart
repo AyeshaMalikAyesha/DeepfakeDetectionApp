@@ -1,7 +1,7 @@
 import 'package:fake_vision/utils/colors.dart';
 import 'package:fake_vision/utils/global_variables.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter/services.dart';
 
 class WebScreenLayout extends StatefulWidget {
   const WebScreenLayout({Key? key}) : super(key: key);
@@ -44,18 +44,59 @@ class _WebScreenLayoutState extends State<WebScreenLayout> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: colorStatusBar, // Set the status bar color
+          statusBarIconBrightness: Brightness.light, // Status bar icons' color
+        ),
+        automaticallyImplyLeading: false,
         backgroundColor: mobileBackgroundColor,
-        centerTitle: false,
-        title: SvgPicture.asset(
-          'assets/ic_instagram.svg',
-          color: primaryColor,
-          height: 32,
+        flexibleSpace: Stack(
+          children: [
+            // Clipping the background image to the bounds of the AppBar
+            ClipRect(
+              child: Positioned.fill(
+                child: Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('Images/bg2.jpg'),
+                      fit: BoxFit.cover,
+                      colorFilter: ColorFilter.mode(
+                        Color.fromARGB(255, 34, 34, 34)
+                            .withOpacity(0.5), // This controls the black tint
+                        BlendMode.darken,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            // Actual AppBar content
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0, top: 20.0),
+              child: Row(
+                children: [
+                  Image.asset('Images/app_logo-removebg.png'),
+
+                  SizedBox(width: 8.0), // Add some spacing
+                  Text(
+                    "FakeVision",
+                    style: TextStyle(
+                      fontFamily: 'Coniferous',
+                      fontSize: 33,
+                      color: whiteColor,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
         actions: [
           IconButton(
-            icon: Icon(
-              Icons.home,
-              color: _page == 0 ? primaryColor : secondaryColor,
+            icon: Image.asset(
+              'Images/face-detection.png',
+              width: 21,
+              color: secondaryColor,
             ),
             onPressed: () => navigationTapped(0),
           ),
@@ -68,14 +109,14 @@ class _WebScreenLayoutState extends State<WebScreenLayout> {
           ),
           IconButton(
             icon: Icon(
-              Icons.add_a_photo,
+              Icons.add_circle,
               color: _page == 2 ? primaryColor : secondaryColor,
             ),
             onPressed: () => navigationTapped(2),
           ),
           IconButton(
             icon: Icon(
-              Icons.camera_enhance_rounded,
+              Icons.group,
               color: _page == 3 ? primaryColor : secondaryColor,
             ),
             onPressed: () => navigationTapped(3),

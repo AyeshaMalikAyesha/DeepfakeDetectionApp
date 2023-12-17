@@ -244,7 +244,11 @@ class _SignupScreenState extends State<SignupScreen> {
                         ]),
                   ),
                   child: !_isLoading
-                      ? const Text('Sign up', style: TextStyle(fontSize: 17))
+                      ? const Text('Sign up',
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontFamily: 'Inter',
+                              color: whiteColor))
                       : const CircularProgressIndicator(
                           color: primaryColor,
                         ),

@@ -1,4 +1,5 @@
 import 'package:fake_vision/resources/auth_methods.dart';
+import 'package:fake_vision/screens/forgot_password_screen.dart';
 import 'package:fake_vision/screens/sign_up_screen.dart';
 import 'package:fake_vision/utils/colors.dart';
 import 'package:fake_vision/utils/global_variables.dart';
@@ -83,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
           padding: MediaQuery.of(context).size.width > webScreenSize
               ? EdgeInsets.symmetric(
                   horizontal: MediaQuery.of(context).size.width / 3)
-              : const EdgeInsets.symmetric(horizontal: 32),
+              : const EdgeInsets.symmetric(horizontal: 42),
           //full width of device
           width: double.infinity,
 
@@ -94,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Image.asset('Images/app_logo-removebg.png'),
 
               const SizedBox(
-                height: 84,
+                height: 64,
               ),
 
               //Text field input for email
@@ -126,9 +127,29 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               const SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 150.0),
+                child: GestureDetector(
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const ForgotPasswordScreen(),
+                    ),
+                  ),
+                  child: Text(
+                    "Forgot Password?",
+                    style: TextStyle(
+                      color: blue,
+                      decoration: TextDecoration
+                          .underline, // Add underline for better indication
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
                 height: 24,
               ),
-
               //button login
               InkWell(
                 onTap: loginUser,
@@ -147,12 +168,40 @@ class _LoginScreenState extends State<LoginScreen> {
                         ]),
                   ),
                   child: !_isLoading
-                      ? const Text('Log in', style: TextStyle(fontSize: 17))
+                      ? const Text('Log in', style: TextStyle(fontSize: 14,fontFamily: 'Inter',color:whiteColor))
                       : const CircularProgressIndicator(
                           color: primaryColor,
                         ),
                 ),
               ),
+              SizedBox(
+                height: 12,
+              ),
+
+              Text(
+                "OR",
+                style: TextStyle(fontFamily: 'Inter', color: Colors.grey),
+              ),
+              SizedBox(
+                height: 12,
+              ),
+              //google icon
+              Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+                CustomSocialButton(
+                    icon_img: Image.network(
+                  "https://pngimg.com/uploads/github/small/github_PNG1.png",
+                  fit: BoxFit.cover,
+                )),
+                CustomSocialButton(
+                    icon_img: Image.network(
+                        'http://pngimg.com/uploads/google/google_PNG19635.png',
+                        fit: BoxFit.cover)),
+                Icon(
+                  Icons.facebook,
+                  size: 46,
+                  color: whiteColor,
+                ),
+              ]),
               const SizedBox(
                 height: 12,
               ),

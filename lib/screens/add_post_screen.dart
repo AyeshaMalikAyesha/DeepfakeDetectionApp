@@ -23,6 +23,19 @@ class _AddPostScreenState extends State<AddPostScreen> {
   final TextEditingController _descriptionController = TextEditingController();
   bool _isLoading = false;
 
+  Future<void> _pickFile(ImageSource source) async {
+    final pickedFile = await ImagePicker().pickVideo(
+      source: source,
+    );
+
+    if (pickedFile != null) {
+      final fileBytes = await pickedFile.readAsBytes();
+      setState(() {
+        _file = fileBytes;
+      });
+    }
+  }
+
   _selectImage(BuildContext parentContext) async {
     return showDialog(
       context: parentContext,
@@ -32,17 +45,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
           children: <Widget>[
             SimpleDialogOption(
                 padding: const EdgeInsets.all(20),
-                child: const Text('Take a photo'),
-                onPressed: () async {
-                  Navigator.pop(context);
-                  Uint8List file = await pickImage(ImageSource.camera);
-                  setState(() {
-                    _file = file;
-                  });
-                }),
-            SimpleDialogOption(
-                padding: const EdgeInsets.all(20),
-                child: const Text('Choose from Gallery'),
+                child: const Text('Choose Image from Gallery'),
                 onPressed: () async {
                   Navigator.of(context).pop();
                   Uint8List file = await pickImage(ImageSource.gallery);
@@ -50,6 +53,14 @@ class _AddPostScreenState extends State<AddPostScreen> {
                     _file = file;
                   });
                 }),
+            SimpleDialogOption(
+              padding: const EdgeInsets.all(20),
+              child: const Text('Choose Video from Gallery (Video)'),
+              onPressed: () async {
+                Navigator.of(context).pop();
+                await _pickFile(ImageSource.gallery);
+              },
+            ),
             SimpleDialogOption(
               padding: const EdgeInsets.all(20),
               child: const Text("Cancel"),
@@ -81,12 +92,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
         setState(() {
           isLoading = false;
         });
-        if (context.mounted) {
-          showSnackBar(
-            context,
-            'Posted!',
-          );
-        }
+        successDialogBox(context, "Posted Successfully");
+
         clearImage();
       } else {
         if (context.mounted) {

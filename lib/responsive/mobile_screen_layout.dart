@@ -49,10 +49,10 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
         backgroundColor: mobileBackgroundColor,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,
-              size: 25,
-              color: (_page == 0) ? primaryColor : secondaryColor,
+            icon: Image.asset(
+              'Images/face-detection.png',
+              width: 21,
+              color: secondaryColor,
             ),
             label: '',
             backgroundColor: primaryColor,
@@ -74,10 +74,10 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
               label: '',
               backgroundColor: primaryColor),
           BottomNavigationBarItem(
-            icon: Image.asset(
-              'Images/face-detection.png',
-              width: 21,
-              color: secondaryColor,
+            icon: Icon(
+              Icons.group,
+              size: 25,
+              color: (_page == 3) ? primaryColor : secondaryColor,
             ),
             label: '',
             backgroundColor: primaryColor,

@@ -20,6 +20,7 @@ class FirestoreMethods {
     try {
       String photoUrl =
           await StorageMethods().uploadImageToStorage('posts', file, true);
+          // String photoUrl = await StorageMethods().uploadFileToStorage('posts', file, true);
 
       String postId = const Uuid().v1();
 

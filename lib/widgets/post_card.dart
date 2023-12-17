@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_vision/models/user.dart' as model;
 import 'package:fake_vision/providers/user_provider.dart';
@@ -115,40 +116,9 @@ class _PostCardState extends State<PostCard> {
                 widget.snap['uid'].toString() == user.uid
                     ? IconButton(
                         onPressed: () {
-                          showDialog(
-                            useRootNavigator: false,
-                            context: context,
-                            builder: (context) {
-                              return Dialog(
-                                child: ListView(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 16),
-                                    shrinkWrap: true,
-                                    children: [
-                                      'Delete',
-                                    ]
-                                        .map(
-                                          (e) => InkWell(
-                                              child: Container(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 12,
-                                                        horizontal: 16),
-                                                child: Text(e),
-                                              ),
-                                              onTap: () {
-                                                deletePost(
-                                                  widget.snap['postId']
-                                                      .toString(),
-                                                );
-                                                // remove the dialog box
-                                                Navigator.of(context).pop();
-                                              }),
-                                        )
-                                        .toList()),
-                              );
-                            },
-                          );
+                          // showDialog(
+                          deleteDialogBox(context,
+                              "Are you sure you want to delete the post?");
                         },
                         icon: const Icon(Icons.more_vert),
                       )
@@ -193,7 +163,7 @@ class _PostCardState extends State<PostCard> {
                       });
                     },
                     child: const Icon(
-                      Icons.favorite,
+                      Icons.thumb_up,
                       color: Colors.white,
                       size: 100,
                     ),
@@ -211,11 +181,11 @@ class _PostCardState extends State<PostCard> {
                 child: IconButton(
                   icon: widget.snap['likes'].contains(user.uid)
                       ? const Icon(
-                          Icons.favorite,
-                          color: Colors.red,
+                          Icons.thumb_up,
+                          color: Colors.blue,
                         )
                       : const Icon(
-                          Icons.favorite_border,
+                          Icons.thumb_up_alt_outlined,
                         ),
                   onPressed: () => FirestoreMethods().likePost(
                     widget.snap['postId'].toString(),
@@ -236,11 +206,6 @@ class _PostCardState extends State<PostCard> {
                   ),
                 ),
               ),
-              IconButton(
-                  icon: const Icon(
-                    Icons.send,
-                  ),
-                  onPressed: () {}),
               Expanded(
                   child: Align(
                 alignment: Alignment.bottomRight,
@@ -325,5 +290,23 @@ class _PostCardState extends State<PostCard> {
         ],
       ),
     );
+  }
+
+  Future deleteDialogBox(BuildContext context, String text) async {
+    AwesomeDialog(
+      context: context,
+      dialogType: DialogType.WARNING,
+      animType: AnimType.BOTTOMSLIDE,
+      title: "Confirmation",
+      desc: text,
+      btnCancelText: "Cancel",
+      btnCancelOnPress: () {},
+      btnOkText: "Delete",
+      btnOkOnPress: () {
+        deletePost(
+          widget.snap['postId'].toString(),
+        );
+      },
+    )..show();
   }
 }
