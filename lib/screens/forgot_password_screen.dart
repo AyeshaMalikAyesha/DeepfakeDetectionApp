@@ -2,6 +2,7 @@ import 'package:fake_vision/screens/login_screen.dart';
 import 'package:fake_vision/utils/colors.dart';
 import 'package:fake_vision/utils/global_variables.dart';
 import 'package:fake_vision/utils/utils.dart';
+import 'package:fake_vision/widgets/text_field_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -39,6 +40,58 @@ class _LoginScreenState extends State<ForgotPasswordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: colorStatusBar, // Set the status bar color
+          statusBarIconBrightness: Brightness.light, // Status bar icons' color
+        ),
+        automaticallyImplyLeading: false,
+        elevation: 5.0, //shadow to app bar
+        flexibleSpace: Stack(
+          children: [
+            // Clipping the background image to the bounds of the AppBar
+            ClipRect(
+              child: Positioned.fill(
+                child: Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('Images/bg2.jpg'),
+                      fit: BoxFit.cover,
+                      colorFilter: ColorFilter.mode(
+                        Color.fromARGB(255, 34, 34, 34)
+                            .withOpacity(0.5), // This controls the black tint
+                        BlendMode.darken,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            // Actual AppBar content
+            Padding(
+              padding: const EdgeInsets.only(left: 1.0, top: 34.0),
+              child: Row(
+                children: [
+                  IconButton(
+                    icon: Icon(
+                      Icons.arrow_back,
+                      color: whiteColor,
+                      size: 20,
+                    ),
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginScreen()),
+                      );
+                    },
+                  ),
+                  SizedBox(width: 8.0), // Add some spacing
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
       body: SafeArea(
         child: Container(
           decoration: BoxDecoration(
@@ -63,25 +116,6 @@ class _LoginScreenState extends State<ForgotPasswordScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    icon: Icon(
-                      Icons.arrow_back,
-                      color: whiteColor,
-                      size: 24,
-                    ),
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => LoginScreen()),
-                      );
-                    },
-                  ),
-                ],
-              ),
-
               SizedBox(height: 80),
               ShaderMask(
                 shaderCallback: (bounds) => LinearGradient(

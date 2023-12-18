@@ -43,20 +43,21 @@ class _SignupScreenState extends State<SignupScreen> {
     _usernameController.dispose();
   }
 
-  void signUpUser() async {
+  void sign_up_user() async {
     // set loading to true
+
     setState(() {
       _isLoading = true;
     });
-
-    // signup user using our authmethodds
+  
+    // signup user using our authmethods
     String res = await AuthMethods().signUpUser(
         email: _emailController.text,
         password: _passwordController.text,
         username: _usernameController.text,
         bio: _bioController.text,
         file: _image!);
-    // if string returned is sucess, user has been created
+    // if string returned is success, user has been created
     if (res == "success") {
       setState(() {
         _isLoading = false;
@@ -72,7 +73,13 @@ class _SignupScreenState extends State<SignupScreen> {
           ),
         );
       }
+    } else if (res == 'Please fill all the fields!!') {
+      errorDialogBox(context, res);
+      setState(() {
+        _isLoading = false;
+      });
     } else {
+      errorDialogBox(context, res);
       setState(() {
         _isLoading = false;
       });
@@ -136,9 +143,7 @@ class _SignupScreenState extends State<SignupScreen> {
               Text(
                 "Create Account",
                 style: TextStyle(
-                  fontSize: 15,
-                  color: whiteColor,
-                ),
+                    fontSize: 15, color: whiteColor, fontFamily: 'Inter'),
               ),
               const SizedBox(
                 height: 34,
@@ -228,7 +233,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 height: 24,
               ),
               InkWell(
-                onTap: signUpUser,
+                onTap: sign_up_user,
                 child: Container(
                   width: double.infinity,
                   alignment: Alignment.center,

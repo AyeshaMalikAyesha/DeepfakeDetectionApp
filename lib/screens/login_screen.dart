@@ -38,6 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void loginUser() async {
+    
     setState(() {
       _isLoading = true;
     });
@@ -50,6 +51,11 @@ class _LoginScreenState extends State<LoginScreen> {
     if (res == 'success') {
       successDialogBox(context, "You have successfully logged in");
 
+      setState(() {
+        _isLoading = false;
+      });
+    } else if (res == 'Please fill all the fields!!') {
+      errorDialogBox(context, res);
       setState(() {
         _isLoading = false;
       });
@@ -168,7 +174,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         ]),
                   ),
                   child: !_isLoading
-                      ? const Text('Log in', style: TextStyle(fontSize: 14,fontFamily: 'Inter',color:whiteColor))
+                      ? const Text('Log in',
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontFamily: 'Inter',
+                              color: whiteColor))
                       : const CircularProgressIndicator(
                           color: primaryColor,
                         ),

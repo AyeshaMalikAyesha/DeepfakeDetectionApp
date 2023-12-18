@@ -2,6 +2,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:fake_vision/responsive/mobile_screen_layout.dart';
 import 'package:fake_vision/responsive/responsive_layout_screen.dart';
 import 'package:fake_vision/responsive/web_screen_layout.dart';
+import 'package:fake_vision/screens/login_screen.dart';
 import 'package:fake_vision/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -47,6 +48,26 @@ Future successDialogBox(BuildContext context, String text) async {
   )..show();
 }
 
+Future errorDialogBox(BuildContext context, String text) async {
+  AwesomeDialog(
+    context: context,
+    dialogType: DialogType.error,
+    animType: AnimType.bottomSlide,
+    title: "Error",
+    desc: text,
+    btnOkOnPress: () {
+      // Now, navigate to the next screen
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (context) => const LoginScreen(),
+        ),
+        (route) => false,
+      );
+    },
+    btnCancelOnPress: () {},
+  )..show();
+}
+
 class CustomSocialButton extends StatelessWidget {
   final Image icon_img;
   const CustomSocialButton({super.key, required this.icon_img});
@@ -71,70 +92,6 @@ class CustomSocialButton extends StatelessWidget {
             ],
           ),
           child: icon_img),
-    );
-  }
-}
-
-class PasswordInput extends StatefulWidget {
-  final String hintText;
-
-  const PasswordInput({required this.hintText, Key? key}) : super(key: key);
-
-  @override
-  State<PasswordInput> createState() => _PasswordInputState();
-}
-
-class _PasswordInputState extends State<PasswordInput> {
-  bool pwdVisibility = false;
-
-  @override
-  Widget build(BuildContext context) {
-    final inputBorder = OutlineInputBorder(
-      borderSide: Divider.createBorderSide(context),
-    );
-    return TextFormField(
-      obscureText: !pwdVisibility,
-      decoration: InputDecoration(
-        hintText: widget.hintText,
-        filled: true,
-        border: inputBorder,
-         contentPadding: const EdgeInsets.all(8),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(5.0),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderSide: const BorderSide(
-            color: Colors.red,
-            width: 1,
-          ),
-          borderRadius: BorderRadius.circular(15.0),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(
-            color: Color.fromARGB(255, 175, 172, 172),
-            width: 1,
-          ),
-          borderRadius: BorderRadius.circular(15.0),
-        ),
-        suffixIcon: InkWell(
-          onTap: () => setState(
-            () => pwdVisibility = !pwdVisibility,
-          ),
-          child: Icon(
-            pwdVisibility
-                ? Icons.visibility_outlined
-                : Icons.visibility_off_outlined,
-            color: const Color.fromARGB(255, 83, 83, 83),
-            size: 18,
-          ),
-        ),
-      ),
-      validator: (val) {
-        if (val!.isEmpty) {
-          return 'Required';
-        }
-        return null;
-      },
     );
   }
 }

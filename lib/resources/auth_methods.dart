@@ -28,11 +28,12 @@ class AuthMethods {
     required Uint8List file,
   }) async {
     String result = "Some error occurred";
+
     try {
-      if (email.isNotEmpty ||
-          password.isNotEmpty ||
-          bio.isNotEmpty ||
-          username.isNotEmpty ||
+      if (email.isNotEmpty &&
+          password.isNotEmpty &&
+          bio.isNotEmpty &&
+          username.isNotEmpty &&
           file != null) {
         //register user
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
@@ -53,7 +54,9 @@ class AuthMethods {
             .collection('users')
             .doc(cred.user!.uid)
             .set(user.toJson());
-        result = "Success";
+        result = "success";
+      } else {
+        result = "Please fill all the fields!!";
       }
     } on FirebaseAuthException catch (err) {
       if (err.code == 'invalid-email') {
@@ -75,12 +78,12 @@ class AuthMethods {
     String result = "Some errror occured";
 
     try {
-      if (email.isNotEmpty || password.isNotEmpty) {
+      if (email.isNotEmpty && password.isNotEmpty) {
         await _auth.signInWithEmailAndPassword(
             email: email, password: password);
         result = "success";
       } else {
-        result = "Please enter all the fields";
+        result = "Please fill all the fields!!";
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -94,8 +97,7 @@ class AuthMethods {
     return result;
   }
 
-
-  Future<void> signOut() async{
-   await  _auth.signOut();
+  Future<void> signOut() async {
+    await _auth.signOut();
   }
 }
