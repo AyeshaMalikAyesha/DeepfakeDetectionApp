@@ -63,6 +63,7 @@ class OutputScreen extends StatelessWidget {
                   ),
                 ],
               ),
+              SizedBox(height: 10),
               ShaderMask(
                 shaderCallback: (bounds) => LinearGradient(
                   colors: [blue, green],
@@ -72,14 +73,14 @@ class OutputScreen extends StatelessWidget {
                 child: Text(
                   'Model Results',
                   style: TextStyle(
-                    fontSize: 50.0,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Coniferous',
+                    fontSize: 30.0,
+                    fontFamily: 'Inter',
                     // The color must be set to white for the gradient to show
                     color: Colors.white,
                   ),
                 ),
               ),
+              SizedBox(height: 10),
               Container(
                   height: 180, width: 180, child: _guageIndicator(context)),
               SizedBox(width: 90),
@@ -159,13 +160,15 @@ class OutputScreen extends StatelessWidget {
                     child: Text(
                       'Details',
                       style: TextStyle(
-                        fontSize: 30.0,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Coniferous',
+                        fontSize: 20.0,
+                        fontFamily: 'Inter',
                         // The color must be set to white for the gradient to show
                         color: Colors.white,
                       ),
                     ),
+                  ),
+                  SizedBox(
+                    height: 10,
                   ),
                   Image(image: AssetImage('Images/fake_image.png'))
                 ],

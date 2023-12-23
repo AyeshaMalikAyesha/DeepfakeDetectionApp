@@ -55,15 +55,23 @@ class _FeedScreenState extends State<FeedScreen> {
                     padding: const EdgeInsets.only(left: 10.0, top: 20.0),
                     child: Row(
                       children: [
-                        Image.asset('Images/app_logo-removebg.png'),
-
-                        SizedBox(width: 8.0), // Add some spacing
-                        Text(
-                          "FakeVision",
-                          style: TextStyle(
-                            fontFamily: 'Coniferous',
-                            fontSize: 33,
-                            color: whiteColor,
+                        SizedBox(
+                          height: 200,
+                        ),
+                        ShaderMask(
+                          shaderCallback: (bounds) => LinearGradient(
+                            colors: [blue, green],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                          ).createShader(bounds),
+                          child: Text(
+                            'Community Forum',
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              fontFamily: 'Inter',
+                              // The color must be set to white for the gradient to show
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ],

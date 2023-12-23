@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 class AddPostScreen extends StatefulWidget {
@@ -55,7 +56,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 }),
             SimpleDialogOption(
               padding: const EdgeInsets.all(20),
-              child: const Text('Choose Video from Gallery (Video)'),
+              child: const Text('Choose Video from Gallery'),
               onPressed: () async {
                 Navigator.of(context).pop();
                 await _pickFile(ImageSource.gallery);
@@ -92,7 +93,11 @@ class _AddPostScreenState extends State<AddPostScreen> {
         setState(() {
           isLoading = false;
         });
-        successDialogBox(context, "Posted Successfully");
+        successDialogBox(
+          context,
+          "Success",
+          "Posted Successfully",
+        );
 
         clearImage();
       } else {
@@ -152,6 +157,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                     ),
                   ),
                 ),
+                SizedBox(height: 10),
                 CustomText(
                   textColor: whiteColor,
                   fontSize: 16.sp,
@@ -160,10 +166,10 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   text0verFlow: TextOverflow.ellipsis,
                   maxline: 5,
                 ),
-                Image.asset(
-                  'Images/upload.png',
-                  height: 200,
-                  width: 200,
+                Lottie.asset(
+                  'Images/upload.json',
+                  height: 150,
+                  width: 150,
                 ),
                 InkWell(
                   onTap: () => _selectImage(context),

@@ -258,9 +258,9 @@ class _PostCardState extends State<PostCard> {
                     child: Text(
                       'View all $commentLen comments',
                       style: const TextStyle(
-                        fontSize: 16,
-                        color: secondaryColor,
-                      ),
+                          fontSize: 14,
+                          color: secondaryColor,
+                          fontFamily: 'Inter'),
                     ),
                   ),
                   onTap: () => Navigator.of(context).push(
@@ -277,8 +277,9 @@ class _PostCardState extends State<PostCard> {
                     DateFormat.yMMMd()
                         .format(widget.snap['datePublished'].toDate()),
                     style: const TextStyle(
-                      color: secondaryColor,
-                    ),
+                        color: secondaryColor,
+                        fontFamily: 'Inter',
+                        fontSize: 13),
                   ),
                 ),
                 Divider(
@@ -295,13 +296,20 @@ class _PostCardState extends State<PostCard> {
   Future deleteDialogBox(BuildContext context, String text) async {
     AwesomeDialog(
       context: context,
-      dialogType: DialogType.WARNING,
+      dialogType: DialogType.noHeader,
       animType: AnimType.BOTTOMSLIDE,
       title: "Confirmation",
+      titleTextStyle:
+          TextStyle(color: whiteColor, fontFamily: 'Inter', fontSize: 20),
       desc: text,
+      descTextStyle: TextStyle(fontFamily: 'Inter', color: whiteColor),
       btnCancelText: "Cancel",
+      buttonsTextStyle: TextStyle(fontFamily: 'Inter', color: whiteColor),
+      btnCancelColor: Colors.transparent,
       btnCancelOnPress: () {},
       btnOkText: "Delete",
+      btnOkColor: Colors.transparent,
+      dialogBackgroundColor: blueColor,
       btnOkOnPress: () {
         deletePost(
           widget.snap['postId'].toString(),

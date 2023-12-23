@@ -12,8 +12,12 @@ const colorStatusBar = Color.fromARGB(255, 17, 58, 90);
 const blue = Colors.blue;
 const green = Colors.green;
 const grey = Colors.grey;
-const navColor = LinearGradient(
-    begin: Alignment.centerLeft,
-    end: Alignment.centerRight,
-    colors: [Color.fromARGB(255, 17, 58, 90), Color.fromRGBO(11, 30, 48, 1)]);
+const navColor = RadialGradient(
+    colors: [Color.fromARGB(255, 24, 118, 190), Color.fromRGBO(10, 49, 85, 1)]);
 const seaGreen = Color.fromARGB(255, 45, 177, 182);
+const redColor = Colors.red;
+const dialogColor = RadialGradient(colors: [
+  Color.fromRGBO(53, 102, 172, 1), // light blue
+  Color.fromARGB(255, 106, 175, 169)
+]);
+const colorNavBar = Color.fromARGB(255, 5, 53, 90);

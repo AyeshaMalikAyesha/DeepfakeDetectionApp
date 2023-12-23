@@ -57,6 +57,8 @@ dependencies:
   syncfusion_flutter_gauges: ^23.2.7
   anim_search_bar: ^2.0.3
   awesome_dialog: ^3.1.0
+  water_drop_nav_bar: ^2.2.0+5
+  lottie: ^2.7.0
   
  
 

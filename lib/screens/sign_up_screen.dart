@@ -74,12 +74,12 @@ class _SignupScreenState extends State<SignupScreen> {
         );
       }
     } else if (res == 'Please fill all the fields!!') {
-      errorDialogBox(context, res);
+      errorDialogBox(context,"Error", res);
       setState(() {
         _isLoading = false;
       });
     } else {
-      errorDialogBox(context, res);
+      errorDialogBox(context, "Error",res);
       setState(() {
         _isLoading = false;
       });

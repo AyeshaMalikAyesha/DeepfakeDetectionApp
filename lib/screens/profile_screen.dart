@@ -79,6 +79,44 @@ class _ProfileScreenState extends State<ProfileScreen> {
     setState(() {
       _isLoading = true;
     });
+
+    AlertDialog alert = AlertDialog(
+      backgroundColor: blueColor,
+      title: Text("Log out",
+          style: TextStyle(color: whiteColor, fontFamily: 'Inter')),
+      content: Text("Log out of your account?",
+          style: TextStyle(color: whiteColor, fontFamily: 'Inter')),
+      actions: [
+        TextButton(
+            onPressed: () {
+              if (context.mounted) {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => ProfileScreen(
+                      uid: FirebaseAuth.instance.currentUser!.uid,
+                    ),
+                  ),
+                );
+              }
+            },
+            child: Text("CANCEL",
+                style: TextStyle(color: whiteColor, fontFamily: 'Inter'))),
+        TextButton(
+            onPressed: signout,
+            child: Text(
+              "LOGOUT",
+              style: TextStyle(color: redColor, fontFamily: 'Inter'),
+            ))
+      ],
+    );
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        });
+  }
+
+  void signout() async {
     await AuthMethods().signOut();
     if (context.mounted) {
       Navigator.of(context).pushReplacement(
@@ -182,9 +220,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Text(
                             "Profile",
                             style: TextStyle(
-                              fontSize: 21,
-                              color: whiteColor,
-                            ),
+                                fontSize: 21,
+                                color: whiteColor,
+                                fontFamily: 'Inter'),
                           ),
                         ],
                       ),
@@ -390,10 +428,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Text(
             label,
             style: const TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w400,
-              color: Colors.grey,
-            ),
+                fontSize: 13,
+                fontWeight: FontWeight.w400,
+                color: Colors.grey,
+                fontFamily: 'Inter'),
           ),
         ),
       ],

@@ -1,4 +1,3 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:fake_vision/responsive/mobile_screen_layout.dart';
 import 'package:fake_vision/responsive/responsive_layout_screen.dart';
 import 'package:fake_vision/responsive/web_screen_layout.dart';
@@ -25,47 +24,95 @@ showSnackBar(BuildContext context, String text) {
   );
 }
 
-Future successDialogBox(BuildContext context, String text) async {
-  AwesomeDialog(
-    context: context,
-    dialogType: DialogType.success,
-    animType: AnimType.bottomSlide,
-    title: "Success",
-    desc: text,
-    btnOkOnPress: () {
-      // Now, navigate to the next screen
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(
-          builder: (context) => const ResponsiveLayout(
-            mobileScreenLayout: MobileScreenLayout(),
-            webScreenLayout: WebScreenLayout(),
-          ),
+Future successDialogBox(
+  BuildContext context,
+  String titleText,
+  String contentText,
+) async {
+  AlertDialog alert = AlertDialog(
+    backgroundColor: blueColor,
+    title: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(
+          Icons.check_circle_outline,
+          color: green,
+          size: 40,
         ),
-        (route) => false,
-      );
-    },
-    btnCancelOnPress: () {},
-  )..show();
+        Text(titleText, style: TextStyle(color: green, fontFamily: 'Inter')),
+      ],
+    ),
+    content: Text(contentText,
+        style:
+            TextStyle(color: whiteColor, fontSize: 14.5, fontFamily: 'Inter')),
+    actions: [
+      TextButton(
+          onPressed: () {
+            // Now, navigate to the next screen
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => const ResponsiveLayout(
+                  mobileScreenLayout: MobileScreenLayout(),
+                  webScreenLayout: WebScreenLayout(),
+                ),
+              ),
+              (route) => false,
+            );
+          },
+          child: Text("Ok",
+              style: TextStyle(
+                  color: whiteColor, fontSize: 18, fontFamily: 'Inter')))
+    ],
+  );
+  showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      });
 }
 
-Future errorDialogBox(BuildContext context, String text) async {
-  AwesomeDialog(
-    context: context,
-    dialogType: DialogType.error,
-    animType: AnimType.bottomSlide,
-    title: "Error",
-    desc: text,
-    btnOkOnPress: () {
-      // Now, navigate to the next screen
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(
-          builder: (context) => const LoginScreen(),
+Future errorDialogBox(
+  BuildContext context,
+  String titleText,
+  String contentText,
+) async {
+  AlertDialog alert = AlertDialog(
+    
+    backgroundColor: blueColor,
+    title: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(
+          Icons.error,
+          color: redColor,
+          size: 30,
         ),
-        (route) => false,
-      );
-    },
-    btnCancelOnPress: () {},
-  )..show();
+        Text(titleText, style: TextStyle(color: redColor, fontFamily: 'Inter')),
+      ],
+    ),
+    content: Text(contentText,
+        style: TextStyle(color: whiteColor, fontSize: 15, fontFamily: 'Inter')),
+    actions: [
+      TextButton(
+          onPressed: () {
+            // Now, navigate to the next screen
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => const LoginScreen(),
+              ),
+              (route) => false,
+            );
+          },
+          child: Text("Ok",
+              style: TextStyle(
+                  color: whiteColor, fontSize: 18, fontFamily: 'Inter')))
+    ],
+  );
+  showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      });
 }
 
 class CustomSocialButton extends StatelessWidget {

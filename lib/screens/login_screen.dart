@@ -48,13 +48,14 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     if (res == 'success') {
-      successDialogBox(context, "You have successfully logged in");
+      successDialogBox(context, "Success", "You have successfully logged in",
+         );
 
       setState(() {
         _isLoading = false;
       });
     } else if (res == 'Please fill all the fields!!') {
-      errorDialogBox(context, res);
+      errorDialogBox(context, "Error", res);
       setState(() {
         _isLoading = false;
       });
