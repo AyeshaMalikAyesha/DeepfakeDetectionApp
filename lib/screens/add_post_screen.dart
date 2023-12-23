@@ -136,11 +136,27 @@ class _AddPostScreenState extends State<AddPostScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                ShaderMask(
+                  shaderCallback: (bounds) => LinearGradient(
+                    colors: [blue, green],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ).createShader(bounds),
+                  child: Text(
+                    'Upload Image/Video',
+                    style: TextStyle(
+                      fontSize: 23.0,
+                      fontFamily: 'Inter',
+                      // The color must be set to white for the gradient to show
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
                 CustomText(
                   textColor: whiteColor,
-                  fontSize: 18.sp,
+                  fontSize: 16.sp,
                   title:
-                      "Upload Image/Video to create deepfake awareness among community",
+                      "Upload Image or Video to create deepfake awareness among community",
                   text0verFlow: TextOverflow.ellipsis,
                   maxline: 5,
                 ),

@@ -1,7 +1,6 @@
 import 'package:fake_vision/screens/login_screen.dart';
 import 'package:fake_vision/utils/colors.dart';
 import 'package:fake_vision/utils/global_variables.dart';
-import 'package:fake_vision/utils/utils.dart';
 import 'package:fake_vision/widgets/text_field_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -126,8 +125,8 @@ class _LoginScreenState extends State<ForgotPasswordScreen> {
                 child: Text(
                   'Change Password',
                   style: TextStyle(
-                    fontSize: 40.0,
-                    fontFamily: 'Coniferous',
+                    fontSize: 30.0,
+                    fontFamily: 'Inter',
                     // The color must be set to white for the gradient to show
                     color: Colors.white,
                   ),

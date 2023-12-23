@@ -1,4 +1,5 @@
 import 'package:fake_vision/screens/main_app_screen.dart';
+import 'package:fake_vision/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:page_transition/page_transition.dart';
@@ -30,7 +31,9 @@ class _SwipeableButtonState extends State<SwipeableButton> {
       child: SwipeableButtonView(
         buttonText: "Get Started",
         buttontextstyle: TextStyle(
-          fontSize: 20.sp,
+          fontSize: 18,
+          fontFamily: 'Inter',
+          color: whiteColor
         ),
         buttonWidget: Container(
           child: Icon(

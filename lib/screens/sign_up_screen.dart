@@ -49,7 +49,7 @@ class _SignupScreenState extends State<SignupScreen> {
     setState(() {
       _isLoading = true;
     });
-  
+
     // signup user using our authmethods
     String res = await AuthMethods().signUpUser(
         email: _emailController.text,
@@ -255,7 +255,7 @@ class _SignupScreenState extends State<SignupScreen> {
                               fontFamily: 'Inter',
                               color: whiteColor))
                       : const CircularProgressIndicator(
-                          color: primaryColor,
+                          color: whiteColor,
                         ),
                 ),
               ),
@@ -272,7 +272,10 @@ class _SignupScreenState extends State<SignupScreen> {
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     child: const Text('Already have an account?',
-                        style: TextStyle(color: whiteColor)),
+                        style: TextStyle(
+                            color: whiteColor,
+                            fontFamily: 'Inter',
+                            fontSize: 13)),
                   ),
                   GestureDetector(
                     onTap: () => Navigator.of(context).push(
@@ -284,8 +287,11 @@ class _SignupScreenState extends State<SignupScreen> {
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: const Text(
                         ' Login',
-                        style:
-                            TextStyle(fontWeight: FontWeight.bold, color: blue),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: blue,
+                            fontFamily: 'Inter',
+                            fontSize: 13),
                       ),
                     ),
                   ),

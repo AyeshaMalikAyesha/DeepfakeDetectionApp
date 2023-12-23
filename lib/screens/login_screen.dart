@@ -38,7 +38,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void loginUser() async {
-    
     setState(() {
       _isLoading = true;
     });
@@ -126,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   color: whiteColor,
                 ),
                 child: TextFieldInput(
-                  hintText: 'Enter your Password',
+                  hintText: 'Enter your password',
                   textInputType: TextInputType.text,
                   textEditingController: _passwordController,
                   isPassword: true,
@@ -147,6 +146,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     "Forgot Password?",
                     style: TextStyle(
                       color: blue,
+                      fontSize: 13,
+                      fontFamily: 'Inter',
                       decoration: TextDecoration
                           .underline, // Add underline for better indication
                     ),
@@ -180,7 +181,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               fontFamily: 'Inter',
                               color: whiteColor))
                       : const CircularProgressIndicator(
-                          color: primaryColor,
+                          color: whiteColor,
                         ),
                 ),
               ),
@@ -188,9 +189,25 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 12,
               ),
 
-              Text(
-                "OR",
-                style: TextStyle(fontFamily: 'Inter', color: Colors.grey),
+              Row(
+                children: [
+                  Expanded(
+                    child: Divider(
+                      color: grey,
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  Text(
+                    "OR",
+                    style: TextStyle(color: grey),
+                  ),
+                  SizedBox(width: 10),
+                  Expanded(
+                    child: Divider(
+                      color: grey,
+                    ),
+                  ),
+                ],
               ),
               SizedBox(
                 height: 12,
@@ -223,7 +240,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   Container(
                     child: Text(
                       "Don't have an account?",
-                      style: TextStyle(color: whiteColor),
+                      style: TextStyle(
+                          color: whiteColor, fontFamily: 'Inter', fontSize: 12),
                     ),
                     padding: const EdgeInsets.symmetric(vertical: 8),
                   ),
@@ -237,8 +255,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: const Text(
                         ' Signup',
-                        style:
-                            TextStyle(fontWeight: FontWeight.bold, color: blue),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: blue,
+                            fontFamily: 'Inter',
+                            fontSize: 13),
                       ),
                     ),
                   ),

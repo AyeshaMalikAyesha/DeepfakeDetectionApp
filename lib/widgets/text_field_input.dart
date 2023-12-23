@@ -20,6 +20,7 @@ class TextFieldInput extends StatelessWidget {
     );
 
     return TextField(
+      style: TextStyle(fontFamily: 'Inter', fontSize: 14),
       controller: textEditingController,
       decoration: InputDecoration(
         hintText: hintText,
@@ -28,7 +29,6 @@ class TextFieldInput extends StatelessWidget {
         enabledBorder: inputBorder,
         filled: true,
         contentPadding: const EdgeInsets.all(8),
-        
       ),
       keyboardType: textInputType,
       obscureText: isPassword,
@@ -36,7 +36,7 @@ class TextFieldInput extends StatelessWidget {
   }
 }
 
-//Password field 
+//Password field
 class PasswordInput extends StatefulWidget {
   final String hintText;
 
@@ -56,11 +56,12 @@ class _PasswordInputState extends State<PasswordInput> {
     );
     return TextFormField(
       obscureText: !pwdVisibility,
+      style: TextStyle(fontFamily: 'Inter',fontSize: 14),
       decoration: InputDecoration(
         hintText: widget.hintText,
         filled: true,
         border: inputBorder,
-         contentPadding: const EdgeInsets.all(8),
+        contentPadding: const EdgeInsets.all(8),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5.0),
         ),

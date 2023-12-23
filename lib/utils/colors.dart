@@ -11,3 +11,9 @@ const blackColor = Colors.black;
 const colorStatusBar = Color.fromARGB(255, 17, 58, 90);
 const blue = Colors.blue;
 const green = Colors.green;
+const grey = Colors.grey;
+const navColor = LinearGradient(
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
+    colors: [Color.fromARGB(255, 17, 58, 90), Color.fromRGBO(11, 30, 48, 1)]);
+const seaGreen = Color.fromARGB(255, 45, 177, 182);
