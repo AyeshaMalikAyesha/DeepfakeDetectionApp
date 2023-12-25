@@ -302,16 +302,20 @@ class _PostCardState extends State<PostCard> {
       dialogType: DialogType.noHeader,
       animType: AnimType.BOTTOMSLIDE,
       title: "Confirmation",
-      titleTextStyle:
-          TextStyle(color: whiteColor, fontFamily: 'Inter', fontSize: 20),
+      titleTextStyle: TextStyle(
+          color: whiteColor,
+          fontWeight: FontWeight.bold,
+          fontFamily: 'Inter',
+          fontSize: 20),
       desc: text,
       descTextStyle: TextStyle(fontFamily: 'Inter', color: whiteColor),
       btnCancelText: "Cancel",
       buttonsTextStyle: TextStyle(fontFamily: 'Inter', color: whiteColor),
-      btnCancelColor: Colors.transparent,
+      btnCancelColor: const Color.fromARGB(255, 167, 207, 240),
       btnCancelOnPress: () {},
       btnOkText: "Delete",
-      btnOkColor: Colors.transparent,
+      buttonsBorderRadius: BorderRadius.circular(25),
+      btnOkColor: redColor,
       dialogBackgroundColor: blueColor,
       btnOkOnPress: () {
         deletePost(

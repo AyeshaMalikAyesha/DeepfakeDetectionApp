@@ -15,7 +15,7 @@ const grey = Colors.grey;
 const navColor = RadialGradient(
     colors: [Color.fromARGB(255, 24, 118, 190), Color.fromRGBO(10, 49, 85, 1)]);
 const seaGreen = Color.fromARGB(255, 45, 177, 182);
-const redColor = Colors.red;
+const redColor = Color.fromARGB(255, 194, 43, 32);
 const dialogColor = RadialGradient(colors: [
   Color.fromRGBO(53, 102, 172, 1), // light blue
   Color.fromARGB(255, 106, 175, 169)

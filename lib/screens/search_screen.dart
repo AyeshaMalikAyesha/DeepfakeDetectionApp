@@ -123,7 +123,7 @@ class _SearchScreenState extends State<SearchScreen> {
       child: AnimSearchBar(
         width: 400,
         helpText: "Search for any user...",
-        
+        style: TextStyle(fontFamily: 'Inter'),
         textController: searchController,
         onSuffixTap: () {
           setState(() {

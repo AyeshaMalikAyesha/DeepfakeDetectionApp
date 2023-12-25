@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:fake_vision/responsive/mobile_screen_layout.dart';
 import 'package:fake_vision/responsive/responsive_layout_screen.dart';
 import 'package:fake_vision/responsive/web_screen_layout.dart';
@@ -26,50 +27,42 @@ showSnackBar(BuildContext context, String text) {
 
 Future successDialogBox(
   BuildContext context,
-  String titleText,
+  String text,
   String contentText,
 ) async {
-  AlertDialog alert = AlertDialog(
-    backgroundColor: blueColor,
-    title: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(
-          Icons.check_circle_outline,
-          color: green,
-          size: 40,
+  AwesomeDialog(
+    context: context,
+    dialogType: DialogType.noHeader,
+    animType: AnimType.BOTTOMSLIDE,
+    title: text,
+    titleTextStyle: TextStyle(
+        color: whiteColor,
+        fontWeight: FontWeight.bold,
+        fontFamily: 'Inter',
+        fontSize: 20),
+    desc: contentText,
+    descTextStyle: TextStyle(fontFamily: 'Inter', color: whiteColor),
+    btnOkText: "Ok",
+    padding: EdgeInsets.only(left: 50, right: 50),
+    btnOkColor: green,
+    buttonsBorderRadius: BorderRadius.circular(25),
+    buttonsTextStyle: TextStyle(fontFamily: 'Inter', color: whiteColor),
+    dialogBackgroundColor: blueColor,
+    btnOkOnPress: () {
+      // Now, navigate to the next screen
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (context) => const ResponsiveLayout(
+            mobileScreenLayout: MobileScreenLayout(),
+            webScreenLayout: WebScreenLayout(),
+          ),
         ),
-        Text(titleText, style: TextStyle(color: green, fontFamily: 'Inter')),
-      ],
-    ),
-    content: Text(contentText,
-        style:
-            TextStyle(color: whiteColor, fontSize: 14.5, fontFamily: 'Inter')),
-    actions: [
-      TextButton(
-          onPressed: () {
-            // Now, navigate to the next screen
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                builder: (context) => const ResponsiveLayout(
-                  mobileScreenLayout: MobileScreenLayout(),
-                  webScreenLayout: WebScreenLayout(),
-                ),
-              ),
-              (route) => false,
-            );
-          },
-          child: Text("Ok",
-              style: TextStyle(
-                  color: whiteColor, fontSize: 18, fontFamily: 'Inter')))
-    ],
-  );
-  showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      });
+        (route) => false,
+      );
+    },
+  )..show();
 }
+
 
 Future errorDialogBox(
   BuildContext context,
@@ -77,7 +70,6 @@ Future errorDialogBox(
   String contentText,
 ) async {
   AlertDialog alert = AlertDialog(
-    
     backgroundColor: blueColor,
     title: Column(
       mainAxisAlignment: MainAxisAlignment.center,
