@@ -1,3 +1,4 @@
+import 'package:fake_vision/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class TextFieldInput extends StatelessWidget {
@@ -56,7 +57,7 @@ class _PasswordInputState extends State<PasswordInput> {
     );
     return TextFormField(
       obscureText: !pwdVisibility,
-      style: TextStyle(fontFamily: 'Inter',fontSize: 14),
+      style: TextStyle(fontFamily: 'Inter', fontSize: 14),
       decoration: InputDecoration(
         hintText: widget.hintText,
         filled: true,

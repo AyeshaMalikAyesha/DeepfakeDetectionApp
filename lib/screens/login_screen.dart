@@ -1,4 +1,7 @@
 import 'package:fake_vision/resources/auth_methods.dart';
+import 'package:fake_vision/responsive/mobile_screen_layout.dart';
+import 'package:fake_vision/responsive/responsive_layout_screen.dart';
+import 'package:fake_vision/responsive/web_screen_layout.dart';
 import 'package:fake_vision/screens/forgot_password_screen.dart';
 import 'package:fake_vision/screens/home/home_screen.dart';
 import 'package:fake_vision/screens/sign_up_screen.dart';
@@ -60,11 +63,16 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     if (res == 'success') {
-      successDialogBox(
-        context,
-        "Success",
-        "You have successfully logged in",
-      );
+      if (context.mounted) {
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => const ResponsiveLayout(
+                mobileScreenLayout: MobileScreenLayout(),
+                webScreenLayout: WebScreenLayout(),
+              ),
+            ),
+            (route) => false);
+      }
 
       setState(() {
         _isLoading = false;
@@ -215,7 +223,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(width: 10),
                   Text(
                     "OR",
-                    style: TextStyle(color: grey),
+                    style: TextStyle(color: grey, fontFamily: 'Inter'),
                   ),
                   SizedBox(width: 10),
                   Expanded(

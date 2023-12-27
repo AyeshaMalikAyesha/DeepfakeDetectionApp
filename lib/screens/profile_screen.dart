@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_vision/resources/auth_methods.dart';
 import 'package:fake_vision/responsive/mobile_screen_layout.dart';
@@ -24,6 +25,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   static String backBtn = 'Images/img_material_symbol_onprimary.svg';
   int postLength = 0;
   bool _isLoading = false;
+
   @override
   void initState() {
     super.initState();
@@ -34,45 +36,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
     setState(() {
       _isLoading = true;
     });
-
     try {
+      print(widget.uid);
       var userSnap = await FirebaseFirestore.instance
           .collection('users')
           .doc(widget.uid)
           .get();
 
-      if (userSnap.exists) {
-        // get post length
-        var postSnap = await FirebaseFirestore.instance
-            .collection('posts')
-            .where('uid', isEqualTo: widget.uid)
-            .get();
+      // get post lENGTH
+      var postSnap = await FirebaseFirestore.instance
+          .collection('posts')
+          .where('uid', isEqualTo: widget.uid)
+          .get();
 
-        setState(() {
-          postLength = postSnap.docs.length;
-          userData = userSnap.data()!;
-          _isLoading = false;
-        });
-      } else {
-        // Handle the case where the user data doesn't exist
-        setState(() {
-          _isLoading = false;
-        });
-        showSnackBar(
-          context,
-          'User data not found',
-        );
-      }
+      postLength = postSnap.docs.length;
+      userData = userSnap.data()!;
+
+      setState(() {});
     } catch (e) {
-      // Handle errors during data fetching
-      setState(() {
-        _isLoading = false;
-      });
       showSnackBar(
         context,
-        'Error fetching user data: $e',
+        e.toString(),
       );
     }
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   void signoutUser() async {
@@ -80,40 +69,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
       _isLoading = true;
     });
 
-    AlertDialog alert = AlertDialog(
-      backgroundColor: blueColor,
-      title: Text("Log out",
-          style: TextStyle(color: whiteColor, fontFamily: 'Inter')),
-      content: Text("Log out of your account?",
-          style: TextStyle(color: whiteColor, fontFamily: 'Inter')),
-      actions: [
-        TextButton(
-            onPressed: () {
-              if (context.mounted) {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) => ProfileScreen(
-                      uid: FirebaseAuth.instance.currentUser!.uid,
-                    ),
-                  ),
-                );
-              }
-            },
-            child: Text("CANCEL",
-                style: TextStyle(color: whiteColor, fontFamily: 'Inter'))),
-        TextButton(
-            onPressed: signout,
-            child: Text(
-              "LOGOUT",
-              style: TextStyle(color: redColor, fontFamily: 'Inter'),
-            ))
-      ],
-    );
-    showDialog(
+    AwesomeDialog(
         context: context,
-        builder: (BuildContext context) {
-          return alert;
-        });
+        dialogType: DialogType.noHeader,
+        animType: AnimType.BOTTOMSLIDE,
+        title: "Confirmation",
+        titleTextStyle: TextStyle(
+            color: whiteColor,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Inter',
+            fontSize: 20),
+        desc: "Log out of your account?",
+        descTextStyle: TextStyle(fontFamily: 'Inter', color: whiteColor),
+        btnCancelText: "Cancel",
+        buttonsTextStyle: TextStyle(fontFamily: 'Inter', color: whiteColor),
+        btnCancelColor: const Color.fromARGB(255, 167, 207, 240),
+        btnCancelOnPress: () {
+          if (context.mounted) {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => ProfileScreen(
+                  uid: FirebaseAuth.instance.currentUser!.uid,
+                ),
+              ),
+            );
+          }
+        },
+        btnOkText: "Logout",
+        buttonsBorderRadius: BorderRadius.circular(25),
+        btnOkColor: redColor,
+        dialogBackgroundColor: blueColor,
+        btnOkOnPress: signout)
+      ..show();
   }
 
   void signout() async {

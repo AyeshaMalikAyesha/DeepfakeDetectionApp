@@ -1,5 +1,6 @@
 import 'package:fake_vision/screens/add_post_screen.dart';
 import 'package:fake_vision/screens/feed_screen.dart';
+import 'package:fake_vision/screens/login_screen.dart';
 import 'package:fake_vision/screens/profile_screen.dart';
 import 'package:fake_vision/screens/scan_screen.dart';
 import 'package:fake_vision/screens/search_screen.dart';
@@ -13,7 +14,23 @@ List<Widget> homeScreenItems = [
   const SearchScreen(),
   const AddPostScreen(),
   const FeedScreen(),
-  ProfileScreen(
-    uid: FirebaseAuth.instance.currentUser!.uid,
-  ),
+   ProfileScreenWrapper(),
 ];
+
+class ProfileScreenWrapper extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData && snapshot.data != null) {
+          return ProfileScreen(uid: snapshot.data!.uid);
+        } else {
+          // User is not logged in, handle accordingly
+          return const LoginScreen();
+        }
+      },
+    );
+  }
+}
+

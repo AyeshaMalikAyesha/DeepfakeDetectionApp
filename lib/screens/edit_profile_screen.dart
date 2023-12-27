@@ -3,7 +3,7 @@ import 'package:fake_vision/utils/app_export.dart';
 import 'package:fake_vision/utils/colors.dart';
 import 'package:fake_vision/widgets/app_bar/appbar_leading_image.dart';
 import 'package:fake_vision/widgets/app_bar/custom_app_bar.dart';
-import 'package:fake_vision/widgets/custom_text_form_field.dart';
+import 'package:fake_vision/widgets/text_field_input.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
