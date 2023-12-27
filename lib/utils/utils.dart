@@ -20,7 +20,7 @@ pickImage(ImageSource source) async {
 showSnackBar(BuildContext context, String text) {
   return ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      content: Text(text),
+      content: Text(text,style: TextStyle(fontFamily: 'Inter'),),
     ),
   );
 }

@@ -56,6 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         (route) => false,
       );
+      res = "Success";
     }
 
     if (res == 'success') {

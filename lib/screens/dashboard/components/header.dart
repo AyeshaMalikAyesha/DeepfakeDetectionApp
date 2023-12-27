@@ -1,7 +1,6 @@
+import 'package:fake_vision/responsive/responsive_admin.dart';
 import 'package:fake_vision/utils/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:fake_vision/responsive/responsive_admin.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class Header extends StatelessWidget {
   const Header({
@@ -14,7 +13,7 @@ class Header extends StatelessWidget {
       children: [
         if (!Responsive.isDesktop(context))
           IconButton(
-              icon: Icon(Icons.menu),
+              icon: Icon(Icons.menu, color: whiteColor),
               onPressed: () {
                 Scaffold.of(context).openDrawer();
               }),
@@ -58,15 +57,10 @@ class ProfileCard extends StatelessWidget {
         horizontal: defaultPadding,
         vertical: defaultPadding / 2,
       ),
-      decoration: BoxDecoration(
-        color: secondaryColor,
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
-        border: Border.all(color: Colors.white10),
-      ),
       child: Row(
         children: [
           CircleAvatar(
-            backgroundImage: AssetImage("assets/images/mockup.png"),
+            backgroundImage: AssetImage("Images/profile_pic.png"),
           ),
           if (!Responsive.isMobile(context))
             Padding(
@@ -91,11 +85,14 @@ class SearchField extends StatelessWidget {
     return TextField(
       decoration: InputDecoration(
         hintText: "Search by Email",
-        fillColor: secondaryColor,
+        contentPadding: const EdgeInsets.all(8),
+        hintStyle:
+            TextStyle(fontFamily: 'Inter', color: blackColor, fontSize: 14),
+        fillColor: whiteColor,
         filled: true,
         border: OutlineInputBorder(
           borderSide: BorderSide.none,
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          borderRadius: const BorderRadius.all(Radius.circular(35)),
         ),
         suffixIcon: InkWell(
           onTap: () {},
@@ -103,12 +100,9 @@ class SearchField extends StatelessWidget {
             padding: EdgeInsets.all(defaultPadding * 0.75),
             margin: EdgeInsets.symmetric(horizontal: defaultPadding / 2),
             decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 9, 43, 70),
               borderRadius: const BorderRadius.all(Radius.circular(10)),
             ),
-            child: SvgPicture.asset(
-              "assets/icons/Search.svg",
-            ),
+            child: Icon(Icons.search),
           ),
         ),
       ),

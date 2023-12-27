@@ -1,7 +1,8 @@
+import 'package:fake_vision/models/daily_info_model.dart';
 import 'package:fake_vision/responsive/responsive_admin.dart';
+import 'package:fake_vision/screens/add_new_admin.dart';
 import 'package:fake_vision/utils/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:fake_vision/models/daily_info_model.dart';
 
 class SelectionSection extends StatelessWidget {
   @override
@@ -47,10 +48,12 @@ class InformationCard extends StatelessWidget {
 
     if (itemCount <= 1) {
       // For single or no items, center the widget
-      return Center(
-        child: itemCount > 0
-            ? MiniInformationWidget(dailyData: dailyDatas[0])
-            : Container(),
+      return Container(
+        child: Center(
+          child: itemCount > 0
+              ? MiniInformationWidget(dailyData: dailyDatas[0])
+              : Container(),
+        ),
       );
     } else {
       // For multiple items, use GridView
@@ -83,46 +86,13 @@ class MiniInformationWidget extends StatefulWidget {
 }
 
 class _MiniInformationWidgetState extends State<MiniInformationWidget> {
-  bool _visible = false;
-
-  TextEditingController _controller = TextEditingController();
-
-  void _toggle() {
-    setState(() {
-      _visible = !_visible;
-    });
-  }
-
-  int charLength = 0;
-
-  bool status = false;
-  bool _closeIcon = true;
-
-  _onChanged(String value) {
-    setState(() {
-      charLength = value.length;
-    });
-
-    if (charLength >= 6) {
-      setState(() {
-        _closeIcon = _closeIcon;
-        status = true;
-      });
-    } else {
-      setState(() {
-        _closeIcon = !_closeIcon;
-        status = false;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Container(
         padding: EdgeInsets.all(defaultPadding),
         decoration: BoxDecoration(
-          color: secondaryColor,
+          gradient: navColor,
           borderRadius: const BorderRadius.all(Radius.circular(10)),
         ),
         child: Column(
@@ -150,82 +120,37 @@ class _MiniInformationWidgetState extends State<MiniInformationWidget> {
             ),
             SizedBox(height: 8),
             GestureDetector(
-                child: Container(
-                  alignment: Alignment.center,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        "New Admin",
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Visibility(
-                        visible: !_visible,
-                        child: Icon(Icons.create, size: 18),
-                      )
-                    ],
-                  ),
+              child: Container(
+                alignment: Alignment.center,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      "New Admin",
+                      style: customTextStyle,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    IconButton(
+                        icon: Icon(Icons.create),
+                        iconSize: 18,
+                        color: whiteColor,
+                        onPressed: () {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                                builder: (context) => AddNewAdmin()),
+                          );
+                        }),
+                  ],
                 ),
-                onTap: () {
-                  _toggle();
-                }),
+              ),
+            ),
             SizedBox(
               height: 8,
-            ),
-            Visibility(
-              visible: _visible,
-              child: new Container(
-                child: new Container(
-                  padding: EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 10.0),
-                  child: new Material(
-                    elevation: 10.0,
-                    borderRadius: BorderRadius.circular(8.0),
-                    child: new ListTile(
-                      title: new TextField(
-                        controller: _controller,
-                        decoration: new InputDecoration(
-                          hintText: 'Enter Email',
-                          border: InputBorder.none,
-                        ),
-                        onChanged: _onChanged,
-                      ),
-                      trailing: new IconButton(
-                        icon: new Icon(Icons.cancel),
-                        onPressed: () {
-                          _controller.clear();
-                          _toggle();
-                          status = false;
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Visibility(
-              maintainSize: true,
-              maintainAnimation: true,
-              maintainState: true,
-              visible: status,
-              child: Container(
-                padding: EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 0),
-                margin: EdgeInsets.only(top: 15),
-                child: Center(
-                  child: TextButton(
-                    child: Text("Start"),
-                    onPressed: () {
-                      _showDialog(context);
-                      _toggle();
-                      status = false;
-                    },
-                  ),
-                ),
-              ),
             ),
           ],
         ),

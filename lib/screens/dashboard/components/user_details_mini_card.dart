@@ -20,7 +20,7 @@ class UserDetailsMiniCard extends StatelessWidget {
       margin: EdgeInsets.only(top: defaultPadding),
       padding: EdgeInsets.all(defaultPadding),
       decoration: BoxDecoration(
-        border: Border.all(width: 2, color: primaryColor.withOpacity(0.15)),
+        border: Border.all(width: 2, color: whiteColor.withOpacity(0.30)),
         borderRadius: const BorderRadius.all(
           Radius.circular(defaultPadding),
         ),
@@ -41,15 +41,13 @@ class UserDetailsMiniCard extends StatelessWidget {
                 children: [
                   Text(
                     title,
+                    style: customTextStyle,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
                     "$numberOfIncrease",
-                    
-                    style: Theme.of(context).textTheme.caption!.copyWith(
-                        color: Color.fromARGB(179, 255, 255, 255)),
-                        
+                    style: customTextStyle,
                   ),
                 ],
               ),

@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:colorize_text_avatar/colorize_text_avatar.dart';
 import 'package:fake_vision/models/recent_user_model.dart';
 import 'package:fake_vision/utils/colors.dart';
@@ -13,7 +14,7 @@ class RecentUsers extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(defaultPadding),
       decoration: BoxDecoration(
-        color: blueColor,
+        gradient: navColor,
         borderRadius: const BorderRadius.all(Radius.circular(10)),
       ),
       child: Column(
@@ -153,62 +154,8 @@ DataRow recentUserDataRow(RecentUser userInfo, BuildContext context) {
                   style:
                       TextStyle(color: Colors.redAccent, fontFamily: 'Inter')),
               onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (_) {
-                      return AlertDialog(
-                          title: Center(
-                            child: Column(
-                              children: [
-                                Icon(Icons.warning_outlined,
-                                    size: 36, color: Colors.red),
-                                SizedBox(height: 20),
-                                Text("Confirm Deletion"),
-                              ],
-                            ),
-                          ),
-                          content: Container(
-                            color: secondaryColor,
-                            height: 70,
-                            child: Column(
-                              children: [
-                                Text(
-                                    "Are you sure want to delete '${userInfo.name}'?"),
-                                SizedBox(
-                                  height: 16,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    ElevatedButton.icon(
-                                        icon: Icon(
-                                          Icons.close,
-                                          size: 14,
-                                        ),
-                                        style: ElevatedButton.styleFrom(
-                                            primary: Colors.grey),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        label: Text("Cancel")),
-                                    SizedBox(
-                                      width: 20,
-                                    ),
-                                    ElevatedButton.icon(
-                                        icon: Icon(
-                                          Icons.delete,
-                                          size: 14,
-                                        ),
-                                        style: ElevatedButton.styleFrom(
-                                            primary: Colors.red),
-                                        onPressed: () {},
-                                        label: Text("Delete"))
-                                  ],
-                                )
-                              ],
-                            ),
-                          ));
-                    });
+                deleteDialogBox(
+                    context, "Are you sure want to delete '${userInfo.name}'?");
               },
               // Delete
             ),
@@ -217,4 +164,29 @@ DataRow recentUserDataRow(RecentUser userInfo, BuildContext context) {
       ),
     ],
   );
+}
+
+Future deleteDialogBox(BuildContext context, String text) async {
+  AwesomeDialog(
+    context: context,
+    dialogType: DialogType.noHeader,
+    animType: AnimType.BOTTOMSLIDE,
+    title: "Confirmation",
+    titleTextStyle: TextStyle(
+        color: whiteColor,
+        fontWeight: FontWeight.bold,
+        fontFamily: 'Inter',
+        fontSize: 20),
+    desc: text,
+    descTextStyle: TextStyle(fontFamily: 'Inter', color: whiteColor),
+    btnCancelText: "Cancel",
+    buttonsTextStyle: TextStyle(fontFamily: 'Inter', color: whiteColor),
+    btnCancelColor: const Color.fromARGB(255, 167, 207, 240),
+    btnCancelOnPress: () {},
+    btnOkText: "Delete",
+    buttonsBorderRadius: BorderRadius.circular(25),
+    btnOkColor: redColor,
+    dialogBackgroundColor: Color.fromARGB(255, 18, 69, 110),
+    btnOkOnPress: () {},
+  )..show();
 }

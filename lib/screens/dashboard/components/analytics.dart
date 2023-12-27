@@ -1,7 +1,7 @@
-import 'package:fake_vision/utils/colors.dart';
-import 'package:flutter/material.dart';
 import 'package:fake_vision/screens/dashboard/components/charts.dart';
 import 'package:fake_vision/screens/dashboard/components/user_details_mini_card.dart';
+import 'package:fake_vision/utils/colors.dart';
+import 'package:flutter/material.dart';
 
 class UserDetailsWidget extends StatelessWidget {
   const UserDetailsWidget({
@@ -13,19 +13,13 @@ class UserDetailsWidget extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(defaultPadding),
       decoration: BoxDecoration(
-        color: secondaryColor,
+        gradient: navColor,
         borderRadius: const BorderRadius.all(Radius.circular(10)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Analytics",
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
+          Text("Analytics", style: customTextStyle),
           SizedBox(height: defaultPadding),
           Chart(),
           UserDetailsMiniCard(

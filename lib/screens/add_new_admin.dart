@@ -1,8 +1,4 @@
-import 'package:fake_vision/resources/auth_methods.dart';
-import 'package:fake_vision/responsive/mobile_screen_layout.dart';
-import 'package:fake_vision/responsive/responsive_layout_screen.dart';
-import 'package:fake_vision/responsive/web_screen_layout.dart';
-import 'package:fake_vision/screens/login_screen.dart';
+import 'package:fake_vision/screens/home/home_screen.dart';
 import 'package:fake_vision/utils/colors.dart';
 import 'package:fake_vision/utils/utils.dart';
 import 'package:fake_vision/widgets/text_field_input.dart';
@@ -10,30 +6,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
-class SignupScreen extends StatefulWidget {
-  const SignupScreen({Key? key}) : super(key: key);
+class AddNewAdmin extends StatefulWidget {
+  const AddNewAdmin({Key? key}) : super(key: key);
 
   @override
-  State<SignupScreen> createState() => _SignupScreenState();
+  State<AddNewAdmin> createState() => _AddNewAdminState();
 }
 
-class _SignupScreenState extends State<SignupScreen> {
+class _AddNewAdminState extends State<AddNewAdmin> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _bioController = TextEditingController();
   bool _isLoading = false;
   Uint8List? _image;
-
-  void initState() {
-    super.initState();
-
-    // Set the status bar color when the screen is created
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: colorStatusBar, // Set your desired status bar color
-      statusBarIconBrightness: Brightness.light,
-    ));
-  }
 
   @override
   void dispose() {
@@ -41,54 +26,6 @@ class _SignupScreenState extends State<SignupScreen> {
     _emailController.dispose();
     _passwordController.dispose();
     _usernameController.dispose();
-    _bioController.dispose();
-  }
-
-  void sign_up_user() async {
-    // set loading to true
-
-    setState(() {
-      _isLoading = true;
-    });
-
-    // signup user using our authmethods
-    String res = await AuthMethods().signUpUser(
-        email: _emailController.text,
-        password: _passwordController.text,
-        username: _usernameController.text,
-        bio: _bioController.text,
-        file: _image!);
-    // if string returned is success, user has been created
-    if (res == "success") {
-      setState(() {
-        _isLoading = false;
-      });
-      // navigate to the home screen
-      if (context.mounted) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => const ResponsiveLayout(
-              mobileScreenLayout: MobileScreenLayout(),
-              webScreenLayout: WebScreenLayout(),
-            ),
-          ),
-        );
-      }
-    } else if (res == 'Please fill all the fields!!') {
-      errorDialogBox(context, "Error", res);
-      setState(() {
-        _isLoading = false;
-      });
-    } else {
-      errorDialogBox(context, "Error", res);
-      setState(() {
-        _isLoading = false;
-      });
-      // show the error
-      if (context.mounted) {
-        showSnackBar(context, res);
-      }
-    }
   }
 
   selectImage() async {
@@ -103,6 +40,58 @@ class _SignupScreenState extends State<SignupScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: colorStatusBar, // Set the status bar color
+          statusBarIconBrightness: Brightness.light, // Status bar icons' color
+        ),
+        automaticallyImplyLeading: false,
+        elevation: 5.0, //shadow to app bar
+        flexibleSpace: Stack(
+          children: [
+            // Clipping the background image to the bounds of the AppBar
+            ClipRect(
+              child: Positioned.fill(
+                child: Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('Images/bg2.jpg'),
+                      fit: BoxFit.cover,
+                      colorFilter: ColorFilter.mode(
+                        Color.fromARGB(255, 34, 34, 34)
+                            .withOpacity(0.5), // This controls the black tint
+                        BlendMode.darken,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            // Actual AppBar content
+            Padding(
+              padding: const EdgeInsets.only(left: 1.0, top: 30),
+              child: Row(
+                children: [
+                  IconButton(
+                    icon: Icon(
+                      Icons.arrow_back,
+                      color: whiteColor,
+                      size: 20,
+                    ),
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => HomeScreen()),
+                      );
+                    },
+                  ),
+                  SizedBox(width: 8.0), // Add some spacing
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
       body: SafeArea(
         child: Container(
           decoration: BoxDecoration(
@@ -125,27 +114,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 flex: 2,
                 child: Container(),
               ),
-              ShaderMask(
-                shaderCallback: (bounds) => LinearGradient(
-                  colors: [blue, green],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ).createShader(bounds),
-                child: Text(
-                  'FakeVision',
-                  style: TextStyle(
-                    fontSize: 60.0,
-                    fontFamily: 'Coniferous',
-                    // The color must be set to white for the gradient to show
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-              Text(
-                "Create Account",
-                style: TextStyle(
-                    fontSize: 15, color: whiteColor, fontFamily: 'Inter'),
-              ),
+              Text("Add New Admin", style: customTextStyle),
               const SizedBox(
                 height: 34,
               ),
@@ -182,7 +151,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   color: whiteColor,
                 ),
                 child: TextFieldInput(
-                  hintText: 'Enter your username',
+                  hintText: 'Enter Username',
                   textInputType: TextInputType.text,
                   textEditingController: _usernameController,
                 ),
@@ -196,7 +165,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   color: whiteColor,
                 ),
                 child: TextFieldInput(
-                  hintText: 'Enter your email',
+                  hintText: 'Enter Email',
                   textInputType: TextInputType.emailAddress,
                   textEditingController: _emailController,
                 ),
@@ -210,7 +179,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   color: whiteColor,
                 ),
                 child: TextFieldInput(
-                  hintText: 'Enter your password',
+                  hintText: 'Enter Password',
                   textInputType: TextInputType.text,
                   textEditingController: _passwordController,
                   isPassword: true,
@@ -224,17 +193,12 @@ class _SignupScreenState extends State<SignupScreen> {
                   borderRadius: BorderRadius.circular(35),
                   color: whiteColor,
                 ),
-                child: TextFieldInput(
-                  hintText: 'Enter your bio',
-                  textInputType: TextInputType.text,
-                  textEditingController: _bioController,
-                ),
               ),
               const SizedBox(
                 height: 24,
               ),
               InkWell(
-                onTap: sign_up_user,
+                onTap: () {},
                 child: Container(
                   width: double.infinity,
                   alignment: Alignment.center,
@@ -250,7 +214,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         ]),
                   ),
                   child: !_isLoading
-                      ? const Text('Sign up',
+                      ? const Text('Add New Admin',
                           style: TextStyle(
                               fontSize: 14,
                               fontFamily: 'Inter',
@@ -266,37 +230,6 @@ class _SignupScreenState extends State<SignupScreen> {
               Flexible(
                 flex: 2,
                 child: Container(),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: const Text('Already have an account?',
-                        style: TextStyle(
-                            color: whiteColor,
-                            fontFamily: 'Inter',
-                            fontSize: 13)),
-                  ),
-                  GestureDetector(
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const LoginScreen(),
-                      ),
-                    ),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: const Text(
-                        ' Login',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: blue,
-                            fontFamily: 'Inter',
-                            fontSize: 13),
-                      ),
-                    ),
-                  ),
-                ],
               ),
             ],
           ),

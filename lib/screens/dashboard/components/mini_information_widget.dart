@@ -1,7 +1,7 @@
+import 'package:fake_vision/models/daily_info_model.dart';
 import 'package:fake_vision/utils/colors.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:fake_vision/models/daily_info_model.dart';
 
 class MiniInformationWidget extends StatefulWidget {
   const MiniInformationWidget({
@@ -20,8 +20,9 @@ class _MiniInformationWidgetState extends State<MiniInformationWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.only(left: 5),
       decoration: BoxDecoration(
-        color: secondaryColor,
+        gradient: navColor,
         borderRadius: const BorderRadius.all(Radius.circular(10)),
       ),
       child: SingleChildScrollView(
@@ -37,7 +38,6 @@ class _MiniInformationWidgetState extends State<MiniInformationWidget> {
                   height: 40,
                   width: 40,
                   decoration: BoxDecoration(
-                    color: widget.dailyData.color!.withOpacity(0.1),
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
                   ),
                   child: Icon(
@@ -49,21 +49,32 @@ class _MiniInformationWidgetState extends State<MiniInformationWidget> {
                 Padding(
                   padding: EdgeInsets.only(right: 1.0),
                   child: DropdownButton(
-                    icon: Icon(Icons.more_vert, size: 18),
+                    dropdownColor: blueColor,
+                    icon: Icon(
+                      Icons.more_vert,
+                      size: 18,
+                      color: whiteColor,
+                    ),
                     underline: SizedBox(),
-                    style: Theme.of(context).textTheme.button,
+                    style: customTextStyle,
                     value: _value,
                     items: [
                       DropdownMenuItem(
-                        child: Text("Daily"),
+                        child: Text(
+                          "Daily",
+                          style: customTextStyle,
+                        ),
                         value: 1,
                       ),
                       DropdownMenuItem(
-                        child: Text("Weekly"),
+                        child: Text(
+                          "Weekly",
+                          style: customTextStyle,
+                        ),
                         value: 2,
                       ),
                       DropdownMenuItem(
-                        child: Text("Monthly"),
+                        child: Text("Monthly", style: customTextStyle),
                         value: 3,
                       ),
                     ],
@@ -77,10 +88,11 @@ class _MiniInformationWidgetState extends State<MiniInformationWidget> {
               ],
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Text(
                   widget.dailyData.title!,
+                  style: customTextStyle,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -107,10 +119,7 @@ class _MiniInformationWidgetState extends State<MiniInformationWidget> {
               children: [
                 Text(
                   "${widget.dailyData.volumeData}",
-                  style: Theme.of(context)
-                      .textTheme
-                      .caption!
-                      .copyWith(color: Colors.white70),
+                  style: customTextStyle,
                 ),
               ],
             )
@@ -135,7 +144,7 @@ class LineChartWidget extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          width: 80,
+          width: 50,
           height: 30,
           child: LineChart(
             LineChartData(

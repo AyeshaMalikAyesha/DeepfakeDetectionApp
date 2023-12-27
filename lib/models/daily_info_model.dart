@@ -57,7 +57,7 @@ var dailyData = [
     "title": "Users",
     "volumeData": 1328,
     "icon": FlutterIcons.user_alt_faw5s,
-    "color": blueColor,
+    "color": whiteColor,
     "percentage": 35,
     "colors": [
       Color(0xff23b6e6),
@@ -106,13 +106,13 @@ var dailyData = [
     "percentage": 35,
     "colors": [Color(0xfff12711), Color(0xfff5af19)],
     "spots": [
-      FlSpot(
+     FlSpot(
         1,
-        1.3,
+        3,
       ),
       FlSpot(
         2,
-        5,
+        4,
       ),
       FlSpot(
         3,
@@ -120,7 +120,7 @@ var dailyData = [
       ),
       FlSpot(
         4,
-        6,
+        1.5,
       ),
       FlSpot(
         5,
@@ -136,7 +136,7 @@ var dailyData = [
       ),
       FlSpot(
         8,
-        1,
+        1.5,
       )
     ]
   },
