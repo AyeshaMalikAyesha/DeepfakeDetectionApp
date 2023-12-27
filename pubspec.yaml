@@ -59,6 +59,17 @@ dependencies:
   awesome_dialog: ^3.1.0
   water_drop_nav_bar: ^2.2.0+5
   lottie: ^2.7.0
+  fl_chart: ^0.36.1
+  flutter_icons:
+    git:
+      url: https://github.com/adarsh-technocrat/flutter-icons.git
+      branch: null-safety-migration
+  colorize_text_avatar: ^1.0.2
+  smooth_page_indicator: ^1.1.0
+  table_calendar: ^3.0.9
+  build_runner: ^2.4.7
+  json_serializable: ^6.7.1
+  json_annotation: ^4.8.1
   
  
 

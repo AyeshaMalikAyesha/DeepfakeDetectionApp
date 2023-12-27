@@ -32,7 +32,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
       _page = page;
     });
   }
-
+ 
   void navigationTapped(int page) {
     //Animating Page
     pageController.jumpToPage(page);
