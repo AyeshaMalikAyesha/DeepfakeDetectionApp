@@ -42,11 +42,16 @@ class _AddPostScreenState extends State<AddPostScreen> {
       context: parentContext,
       builder: (BuildContext context) {
         return SimpleDialog(
-          title: const Text('Create a Post'),
+          backgroundColor: blueColor,
+          title: const Text(
+            'Create a Post',
+            style: TextStyle(fontFamily: 'Inter', color: whiteColor),
+          ),
           children: <Widget>[
             SimpleDialogOption(
                 padding: const EdgeInsets.all(20),
-                child: const Text('Choose Image from Gallery'),
+                child: const Text('Choose Image from Gallery',
+                    style: TextStyle(fontFamily: 'Inter', color: whiteColor)),
                 onPressed: () async {
                   Navigator.of(context).pop();
                   Uint8List file = await pickImage(ImageSource.gallery);
@@ -56,18 +61,35 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 }),
             SimpleDialogOption(
               padding: const EdgeInsets.all(20),
-              child: const Text('Choose Video from Gallery'),
+              child: const Text('Choose Video from Gallery',
+                  style: TextStyle(fontFamily: 'Inter', color: whiteColor)),
               onPressed: () async {
                 Navigator.of(context).pop();
                 await _pickFile(ImageSource.gallery);
               },
             ),
-            SimpleDialogOption(
-              padding: const EdgeInsets.all(20),
-              child: const Text("Cancel"),
-              onPressed: () {
-                Navigator.pop(context);
-              },
+            Center(
+              child: InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 35, vertical: 10),
+                  decoration: BoxDecoration(
+                    color: redColor, // Set the background color to red
+                    borderRadius: BorderRadius.circular(35), // Rounded corners
+                  ),
+                  child: const Text(
+                    "Cancel",
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      color:
+                          Colors.white, // Text color, white for better contrast
+                    ),
+                  ),
+                ),
+              ),
             )
           ],
         );

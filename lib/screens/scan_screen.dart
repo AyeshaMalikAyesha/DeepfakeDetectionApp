@@ -71,78 +71,20 @@ class _ScanScreenState extends State<ScanScreen> {
       resizeToAvoidBottomInset: false,
       backgroundColor:
           width > webScreenSize ? webBackgroundColor : mobileBackgroundColor,
-      appBar: width > webScreenSize
-          ? null
-          : AppBar(
-              systemOverlayStyle: SystemUiOverlayStyle(
-                statusBarColor: colorStatusBar, // Set the status bar color
-                statusBarIconBrightness:
-                    Brightness.light, // Status bar icons' color
-              ),
-              automaticallyImplyLeading: false,
-              elevation: 5.0, //shadow to app bar
-              flexibleSpace: Stack(
-                children: [
-                  // Clipping the background image to the bounds of the AppBar
-                  ClipRect(
-                    child: Positioned.fill(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('Images/bg2.jpg'),
-                            fit: BoxFit.cover,
-                            colorFilter: ColorFilter.mode(
-                              Color.fromARGB(255, 34, 34, 34).withOpacity(
-                                  0.5), // This controls the black tint
-                              BlendMode.darken,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  // Actual AppBar content
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10.0, top: 20.0),
-                    child: Row(
-                      children: [
-                        Image.asset('Images/app_logo-removebg.png'),
-
-                        SizedBox(width: 8.0), // Add some spacing
-                        ShaderMask(
-                          shaderCallback: (bounds) => LinearGradient(
-                            colors: [blue, green],
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                          ).createShader(bounds),
-                          child: Text(
-                            'FakeVision',
-                            style: TextStyle(
-                              fontSize: 40.0,
-                              fontFamily: 'Coniferous',
-                              // The color must be set to white for the gradient to show
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
       body: SafeArea(
         child: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
                 image: AssetImage('Images/bg13.png'), fit: BoxFit.fill),
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 2),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              Image.asset('Images/app_logo-removebg.png',
+                  width: 140, height: 140),
               Flexible(
-                flex: 1,
+                flex: 0,
                 child: Container(),
               ),
               ShaderMask(
@@ -213,7 +155,7 @@ class _ScanScreenState extends State<ScanScreen> {
                   ),
                   child: !_isLoading
                       ? Text(
-                          'SCAN',
+                          'Scan',
                           style: theme.textTheme.bodyMedium,
                         )
                       : const CircularProgressIndicator(
