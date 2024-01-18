@@ -1,7 +1,8 @@
 import 'package:fake_vision/screens/login_screen.dart';
 import 'package:fake_vision/utils/colors.dart';
 import 'package:fake_vision/utils/global_variables.dart';
-import 'package:fake_vision/widgets/text_field_input.dart';
+import 'package:fake_vision/utils/utils.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -9,14 +10,12 @@ class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
 
   @override
-  State<ForgotPasswordScreen> createState() => _LoginScreenState();
+  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
 }
 
-class _LoginScreenState extends State<ForgotPasswordScreen> {
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  bool _isLoading = false;
+class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+  bool _isSendingResetEmail = false;
+  final TextEditingController _emailController = TextEditingController();
 
   void initState() {
     super.initState();
@@ -31,8 +30,7 @@ class _LoginScreenState extends State<ForgotPasswordScreen> {
   @override
   void dispose() {
     super.dispose();
-    _confirmPasswordController.dispose();
-    _passwordController.dispose();
+    _emailController.dispose();
   }
 
   @override
@@ -136,57 +134,55 @@ class _LoginScreenState extends State<ForgotPasswordScreen> {
               const SizedBox(
                 height: 94,
               ),
-
-              //Text field input for password
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(25),
-                  color: whiteColor,
-                ),
-                child: PasswordInput(hintText: "Enter New Password"),
-              ),
-              const SizedBox(
-                height: 24,
-              ),
-
-              //Text field input for confirm password
-              Container(
-                child: PasswordInput(hintText: "Confirm Password"),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-
-              const SizedBox(
-                height: 24,
-              ),
-              //button login
-              InkWell(
-                onTap: () {},
-                child: Container(
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(35),
-                    gradient: LinearGradient(
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight,
-                        colors: [
-                          Color.fromRGBO(53, 102, 172, 1), // light blue
-                          Color.fromARGB(255, 106, 175, 169) // dark blue
-                        ]),
+              TextField(
+                controller: _emailController,
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.only(top: 5, left: 17),
+                  hintText: "Enter email",
+                  hintStyle: TextStyle(fontFamily: 'Inter', fontSize: 14),
+                  fillColor: Colors.white, // White background color
+                  filled: true, // Don't forget to set filled to true
+                  labelStyle: TextStyle(color: Colors.black),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide.none, // No border
                   ),
-                  child: !_isLoading
-                      ? const Text('Change Password',
-                          style: TextStyle(
-                              fontSize: 14,
-                              color: whiteColor,
-                              fontFamily: 'Inter'))
-                      : const CircularProgressIndicator(
-                          color: primaryColor,
-                        ),
+                  // If you want to apply the same style when the TextField is focused
                 ),
+                style: TextStyle(
+                  color: Colors.black, // Text color
+                ),
+                keyboardType: TextInputType.emailAddress,
+              ),
+
+              const SizedBox(
+                height: 54,
+              ),
+              //button reset password
+              InkWell(
+                onTap: () {
+                  sendPasswordResetEmail(_emailController.text);
+                },
+                child: _isSendingResetEmail
+                    ? CircularProgressIndicator(color: Colors.white)
+                    : Container(
+                        width: double.infinity,
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(35),
+                          gradient: LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              colors: [
+                                Color.fromRGBO(53, 102, 172, 1), // light blue
+                                Color.fromARGB(255, 106, 175, 169) // dark blue
+                              ]),
+                        ),
+                        child: const Text('Change Password',
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: whiteColor,
+                                fontFamily: 'Inter'))),
               ),
               SizedBox(
                 height: 12,
@@ -196,5 +192,37 @@ class _LoginScreenState extends State<ForgotPasswordScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> sendPasswordResetEmail(String email) async {
+    if (email.isEmpty) {
+      showSnackBar(context, 'Please enter your email');
+      return;
+    }
+
+    try {
+      setState(() {
+        _isSendingResetEmail = true;
+      });
+
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+
+      setState(() {
+        _isSendingResetEmail = false;
+      });
+
+      showSnackBar(context, 'Password reset email sent!');
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        _isSendingResetEmail = false;
+      });
+
+      var errorMessage = 'An error occurred. Please try again.';
+      if (e.code == 'user-not-found') {
+        errorMessage = 'No user found for that email.';
+      }
+
+      showSnackBar(context, errorMessage);
+    }
   }
 }

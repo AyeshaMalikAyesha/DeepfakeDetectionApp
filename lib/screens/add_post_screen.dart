@@ -308,6 +308,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                             controller: _descriptionController,
                             decoration: const InputDecoration(
                                 hintText: "What do you want to talk about?",
+                                hintStyle: TextStyle(fontFamily: 'Inter'),
                                 border: InputBorder.none),
                             maxLines: 1,
                           ),

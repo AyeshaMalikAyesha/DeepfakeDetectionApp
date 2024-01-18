@@ -3,9 +3,11 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_vision/models/user.dart' as model;
 import 'package:fake_vision/resources/storage_methods.dart';
+import 'package:fake_vision/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthMethods {
+ 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -107,3 +109,4 @@ class AuthMethods {
     await _auth.signOut();
   }
 }
+

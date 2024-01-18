@@ -14,9 +14,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 bool show = true;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    statusBarColor:
-        colorStatusBar, // Set the status bar color
+    statusBarColor: colorStatusBar, // Set the status bar color
     statusBarIconBrightness: Brightness.light, // Status bar icons' color
   ));
 
@@ -36,12 +36,16 @@ void main() async {
       options: DefaultFirebaseOptions.currentPlatform,
     );
   }
-  runApp(MyApp());
+ SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]).then((_) {
+    runApp(MyApp());
+  });
+
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-  
 
   @override
   Widget build(BuildContext context) {
