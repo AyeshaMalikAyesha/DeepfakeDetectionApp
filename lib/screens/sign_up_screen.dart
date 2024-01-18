@@ -1,7 +1,4 @@
 import 'package:fake_vision/resources/auth_methods.dart';
-import 'package:fake_vision/responsive/mobile_screen_layout.dart';
-import 'package:fake_vision/responsive/responsive_layout_screen.dart';
-import 'package:fake_vision/responsive/web_screen_layout.dart';
 import 'package:fake_vision/screens/login_screen.dart';
 import 'package:fake_vision/utils/colors.dart';
 import 'package:fake_vision/utils/utils.dart';
@@ -51,6 +48,17 @@ class _SignupScreenState extends State<SignupScreen> {
       _isLoading = true;
     });
 
+    if (_usernameController.text.isEmpty ||
+        _emailController.text.isEmpty ||
+        _passwordController.text.isEmpty ||
+        _bioController.text.isEmpty ||
+        _image == null) {
+      showSnackBar(context, "Please fill all the fields and select an image");
+      setState(() {
+      _isLoading = false;
+    });
+      return;
+    }
     // signup user using our authmethods
     String res = await AuthMethods().signUpUser(
         email: _emailController.text,
@@ -58,11 +66,9 @@ class _SignupScreenState extends State<SignupScreen> {
         username: _usernameController.text,
         bio: _bioController.text,
         file: _image!);
+
     // if string returned is success, user has been created
     if (res == "success") {
-      setState(() {
-        _isLoading = false;
-      });
       // navigate to the home screen
       if (context.mounted) {
         Navigator.of(context).pushReplacement(
@@ -71,13 +77,15 @@ class _SignupScreenState extends State<SignupScreen> {
           ),
         );
       }
-    } else if (res == 'Please fill all the fields!!') {
-      errorDialogBox(context, "Error", res);
+      setState(() {
+        _isLoading = false;
+      });
+    } else if (res == "Please fill all the fields!!") {
+      showSnackBar(context, res);
       setState(() {
         _isLoading = false;
       });
     } else {
-      errorDialogBox(context, "Error", res);
       setState(() {
         _isLoading = false;
       });

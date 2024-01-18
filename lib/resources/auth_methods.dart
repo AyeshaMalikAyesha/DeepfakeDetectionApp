@@ -28,7 +28,6 @@ class AuthMethods {
     required Uint8List file,
   }) async {
     String result = "Some error occurred";
-
     try {
       if (email.isNotEmpty &&
           password.isNotEmpty &&
@@ -67,6 +66,7 @@ class AuthMethods {
     } catch (err) {
       result = err.toString();
     }
+
     return result;
   }
 
@@ -90,10 +90,16 @@ class AuthMethods {
         result = "user not found";
       } else if (e.code == 'wrong-password') {
         result = "Wrong password";
+      } else if (e.code == 'invalid-email') {
+        result = 'The email is badly formatted';
+      } else if (e.code == "INVALID_LOGIN_CREDENTIALS") {
+        result = "Invalid Login Credentials";
       }
+      print(e.message);
     } catch (err) {
       result = err.toString();
     }
+
     return result;
   }
 

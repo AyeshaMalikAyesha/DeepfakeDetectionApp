@@ -1,4 +1,4 @@
-import 'package:fake_vision/screens/home/home_screen.dart';
+import 'package:fake_vision/screens/forms/input_form.dart';
 import 'package:fake_vision/utils/colors.dart';
 import 'package:fake_vision/utils/utils.dart';
 import 'package:fake_vision/widgets/text_field_input.dart';
@@ -79,10 +79,11 @@ class _AddNewAdminState extends State<AddNewAdmin> {
                       size: 20,
                     ),
                     onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => HomeScreen()),
-                      );
+                      Navigator.of(context).push(new MaterialPageRoute<Null>(
+                          builder: (BuildContext context) {
+                            return new FormMaterial();
+                          },
+                          fullscreenDialog: true));
                     },
                   ),
                   SizedBox(width: 8.0), // Add some spacing

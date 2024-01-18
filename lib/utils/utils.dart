@@ -20,7 +20,10 @@ pickImage(ImageSource source) async {
 showSnackBar(BuildContext context, String text) {
   return ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      content: Text(text,style: TextStyle(fontFamily: 'Inter'),),
+      content: Text(
+        text,
+        style: TextStyle(fontFamily: 'Inter'),
+      ),
     ),
   );
 }
@@ -62,7 +65,6 @@ Future successDialogBox(
     },
   )..show();
 }
-
 
 Future errorDialogBox(
   BuildContext context,

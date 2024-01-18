@@ -52,26 +52,19 @@ class _FeedScreenState extends State<FeedScreen> {
                   ),
                   // Actual AppBar content
                   Padding(
-                    padding: const EdgeInsets.only(left: 10.0, top: 20.0),
+                    padding: const EdgeInsets.only(left: 20.0, top: 22.0),
                     child: Row(
                       children: [
                         SizedBox(
                           height: 200,
                         ),
-                        ShaderMask(
-                          shaderCallback: (bounds) => LinearGradient(
-                            colors: [blue, green],
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                          ).createShader(bounds),
-                          child: Text(
-                            'Community Forum',
-                            style: TextStyle(
-                              fontSize: 20.0,
-                              fontFamily: 'Inter',
-                              // The color must be set to white for the gradient to show
-                              color: Colors.white,
-                            ),
+                        Text(
+                          'Community Forum',
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            fontFamily: 'Inter',
+                            // The color must be set to white for the gradient to show
+                            color: Colors.white,
                           ),
                         ),
                       ],

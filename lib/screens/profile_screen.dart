@@ -186,7 +186,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     // Actual AppBar content
                     Padding(
-                      padding: const EdgeInsets.only(left: 1.0, top: 12),
+                      padding: const EdgeInsets.only(left: 1.0, top: 5),
                       child: Row(
                         children: [
                           IconButton(
@@ -203,7 +203,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               );
                             },
                           ),
-                          SizedBox(width: 8.0), // Add some spacing
+                          SizedBox(width: 7.0), // Add some spacing
                           Text(
                             "Profile",
                             style: TextStyle(

@@ -78,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
         _isLoading = false;
       });
     } else if (res == 'Please fill all the fields!!') {
-      errorDialogBox(context, "Error", res);
+      showSnackBar(context, res);
       setState(() {
         _isLoading = false;
       });

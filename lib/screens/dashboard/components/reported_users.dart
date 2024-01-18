@@ -58,7 +58,15 @@ class ReportedUsers extends StatelessWidget {
                       );
                     },
                   ),
-                  SizedBox(width: 8.0), // Add some spacing
+                  SizedBox(width: 8.0),
+                  Text(
+                    "Reported Users",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontFamily: 'Inter',
+                      color: whiteColor,
+                    ),
+                  ), // Add some spacing
                 ],
               ),
             ),
@@ -74,16 +82,6 @@ class ReportedUsers extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "Reported Users",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.red,
-                fontFamily: 'Inter',
-                fontSize: 20,
-                decoration: TextDecoration.none,
-              ),
-            ),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: SingleChildScrollView(
@@ -147,14 +145,18 @@ DataRow reportedUserDataRow(ReportedUser userInfo, BuildContext context) {
         Row(
           children: [
             TextButton(
-              child: Text('Warning', style: TextStyle(color: Colors.redAccent)),
+              child: Text('Warning',
+                  style:
+                      TextStyle(color: Colors.redAccent, fontFamily: 'Inter')),
               onPressed: () {},
             ),
             SizedBox(
               width: 6,
             ),
             TextButton(
-              child: Text("Delete", style: TextStyle(color: Colors.redAccent)),
+              child: Text("Delete",
+                  style:
+                      TextStyle(color: Colors.redAccent, fontFamily: 'Inter')),
               onPressed: () {
                 deleteDialogBox(context,
                     "Are you sure want to delete '${userInfo.reported_to}'?");
