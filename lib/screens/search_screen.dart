@@ -15,6 +15,7 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController searchController = TextEditingController();
+  String searchText = '';
   bool isShowUsers = false;
 
   @override
@@ -63,12 +64,15 @@ class _SearchScreenState extends State<SearchScreen> {
           ? FutureBuilder(
               future: FirebaseFirestore.instance
                   .collection('users')
-                  .where('username',
-                      isGreaterThanOrEqualTo: searchController.text)
+                  .where('username', isEqualTo: searchText.trim()) //isEqualTo query is used for case sensitive matching
                   .get(),
               builder: (context, snapshot) {
-                if (!snapshot.hasData) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
+                }
+                if (!snapshot.hasData ||
+                    (snapshot.data! as dynamic).docs.isEmpty) {
+                  return Center(child: Text("No users found"));
                 }
                 return ListView.builder(
                     itemCount: (snapshot.data! as dynamic).docs.length,
@@ -130,8 +134,9 @@ class _SearchScreenState extends State<SearchScreen> {
             searchController.clear();
           });
         },
-        onSubmitted: (String _) {
+        onSubmitted: (String value) {
           setState(() {
+            searchText = value;
             isShowUsers = true;
           });
         },
