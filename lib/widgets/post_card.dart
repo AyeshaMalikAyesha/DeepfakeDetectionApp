@@ -64,7 +64,9 @@ class _PostCardState extends State<PostCard> {
   @override
   Widget build(BuildContext context) {
     final model.User user = Provider.of<UserProvider>(context).getUser;
-    final width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.of(context)
+        .size
+        .width; //It is used to get the width of the current screen or window that the app is running on
 
     return Container(
       // boundary needed for web
@@ -182,7 +184,7 @@ class _PostCardState extends State<PostCard> {
                   icon: widget.snap['likes'].contains(user.uid)
                       ? const Icon(
                           Icons.thumb_up,
-                          color: Colors.blue,
+                          color: Color.fromARGB(255, 54, 156, 68),
                         )
                       : const Icon(
                           Icons.thumb_up_alt_outlined,
@@ -206,12 +208,6 @@ class _PostCardState extends State<PostCard> {
                   ),
                 ),
               ),
-              Expanded(
-                  child: Align(
-                alignment: Alignment.bottomRight,
-                child: IconButton(
-                    icon: const Icon(Icons.report_rounded), onPressed: () {}),
-              ))
             ],
           ),
           //DESCRIPTION AND NUMBER OF COMMENTS

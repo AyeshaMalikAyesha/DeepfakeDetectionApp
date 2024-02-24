@@ -22,7 +22,8 @@ class _ResponsiveLayoutState extends State<ResponsiveLayout> {
     super.initState();
     addData();
   }
-
+//addData() that relies on the UserProvider to refresh user-related data
+//The purpose of refreshing the user data might be to fetch the latest information or perform any necessary updates.
   addData() async {
     UserProvider userProvider =
         Provider.of<UserProvider>(context, listen: false);
@@ -31,9 +32,11 @@ class _ResponsiveLayoutState extends State<ResponsiveLayout> {
 
   @override
   Widget build(BuildContext context) {
+    //LayoutBuilder is a widget that builds itself based on the parent widget's constraints. 
+    //It's particularly useful for creating a widget tree that depends on the parent widget's size
     return LayoutBuilder(builder: (context, constraints) {
       if (constraints.maxWidth > webScreenSize) {
-        // 600 can be changed to 900 if you want to display tablet screen with mobile screen layout
+        
         return widget.webScreenLayout;
       }
       return widget.mobileScreenLayout;

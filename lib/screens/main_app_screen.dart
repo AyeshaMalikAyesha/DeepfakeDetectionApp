@@ -9,7 +9,9 @@ import 'package:flutter/material.dart';
 class MainAppScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    //streambuilder widget is used to display dynamic, real time data
     return StreamBuilder(
+      //Using FirebaseAuth.instance.authStateChanges() in a StreamBuilder show a login page to unauthenticated users and a home screen to authenticated users.
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {

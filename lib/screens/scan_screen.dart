@@ -42,7 +42,7 @@ class _ScanScreenState extends State<ScanScreen> {
       _isLoading = true;
     });
 
-    // Simulating some asynchronous task, replace this with your actual logic
+    // Simulating some asynchronous task
     await Future.delayed(Duration(seconds: 2));
 
     // Navigate to the OutputScreen
@@ -166,6 +166,7 @@ class _ScanScreenState extends State<ScanScreen> {
               const SizedBox(
                 height: 12,
               ),
+              //Flexible: This widget wraps around a child widget to give it flexibility in terms of how it takes up space within a Row, Column, or Flex parent.
               Flexible(
                 flex: 2,
                 child: Container(),

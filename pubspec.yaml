@@ -57,9 +57,7 @@ dependencies:
   syncfusion_flutter_gauges: ^23.2.7
   anim_search_bar: ^2.0.3
   awesome_dialog: ^3.1.0
-  water_drop_nav_bar: ^2.2.0+5
   lottie: ^2.7.0
-  fl_chart: ^0.36.1
   flutter_icons:
     git:
       url: https://github.com/adarsh-technocrat/flutter-icons.git

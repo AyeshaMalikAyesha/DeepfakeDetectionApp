@@ -20,6 +20,8 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
   bool _isLoading = false;
+  //The Uint8List is particularly useful when you are dealing with binary data or 
+  //interfacing with lower-level APIs, such as working with images, files, or network data.
   Uint8List? _image;
 
   void initState() {
@@ -55,8 +57,8 @@ class _SignupScreenState extends State<SignupScreen> {
         _image == null) {
       showSnackBar(context, "Please fill all the fields and select an image");
       setState(() {
-      _isLoading = false;
-    });
+        _isLoading = false;
+      });
       return;
     }
     // signup user using our authmethods
@@ -90,7 +92,7 @@ class _SignupScreenState extends State<SignupScreen> {
         _isLoading = false;
       });
       // show the error
-      if (context.mounted) {
+      if (context.mounted) {//will return true if widget is in tree
         showSnackBar(context, res);
       }
     }

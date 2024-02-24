@@ -7,9 +7,9 @@ import 'package:fake_vision/screens/login_screen.dart';
 import 'package:fake_vision/utils/app_export.dart';
 import 'package:fake_vision/utils/colors.dart';
 import 'package:fake_vision/utils/utils.dart';
+import 'package:fake_vision/widgets/app_bar/custom_app_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String uid;
@@ -156,66 +156,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
           )
         : SafeArea(
             child: Scaffold(
-              appBar: AppBar(
-                systemOverlayStyle: SystemUiOverlayStyle(
-                  statusBarColor: colorStatusBar, // Set the status bar color
-                  statusBarIconBrightness:
-                      Brightness.light, // Status bar icons' color
-                ),
-                automaticallyImplyLeading: false,
-                elevation: 5.0, //shadow to app bar
-                flexibleSpace: Stack(
-                  children: [
-                    // Clipping the background image to the bounds of the AppBar
-                    ClipRect(
-                      child: Positioned.fill(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage('Images/bg2.jpg'),
-                              fit: BoxFit.cover,
-                              colorFilter: ColorFilter.mode(
-                                Color.fromARGB(255, 34, 34, 34).withOpacity(
-                                    0.5), // This controls the black tint
-                                BlendMode.darken,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    // Actual AppBar content
-                    Padding(
-                      padding: const EdgeInsets.only(left: 1.0, top: 5),
-                      child: Row(
-                        children: [
-                          IconButton(
-                            icon: Icon(
-                              Icons.arrow_back,
-                              color: whiteColor,
-                              size: 20,
-                            ),
-                            onPressed: () {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MobileScreenLayout()),
-                              );
-                            },
-                          ),
-                          SizedBox(width: 7.0), // Add some spacing
-                          Text(
-                            "Profile",
-                            style: TextStyle(
-                                fontSize: 21,
-                                color: whiteColor,
-                                fontFamily: 'Inter'),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+              appBar: CustomAppBar(
+                title: 'Profile',
+                paddingTop: 5,
+                backButtonScreen: MobileScreenLayout(),
               ),
               body: Container(
                 width: double.maxFinite,

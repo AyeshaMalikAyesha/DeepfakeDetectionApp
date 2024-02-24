@@ -19,7 +19,7 @@ class AddPostScreen extends StatefulWidget {
 }
 
 class _AddPostScreenState extends State<AddPostScreen> {
-  Uint8List? _file;
+  Uint8List? _file;//it can be null
   bool isLoading = false;
   final TextEditingController _descriptionController = TextEditingController();
   bool _isLoading = false;

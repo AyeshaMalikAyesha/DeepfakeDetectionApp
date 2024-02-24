@@ -61,10 +61,12 @@ class _SearchScreenState extends State<SearchScreen> {
         ),
       ),
       body: isShowUsers
-          ? FutureBuilder(
+          ? FutureBuilder(//FutureBuilder is useful for any UI that depends on asynchronous data
               future: FirebaseFirestore.instance
                   .collection('users')
-                  .where('username', isEqualTo: searchText.trim()) //isEqualTo query is used for case sensitive matching
+                  .where('username',
+                      isEqualTo: searchText
+                          .trim()) //isEqualTo query is used for case sensitive matching
                   .get(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -72,7 +74,11 @@ class _SearchScreenState extends State<SearchScreen> {
                 }
                 if (!snapshot.hasData ||
                     (snapshot.data! as dynamic).docs.isEmpty) {
-                  return Center(child: Text("No users found"));
+                  return Center(
+                      child: Text(
+                    "No users found",
+                    style: TextStyle(fontFamily: 'Inter'),
+                  ));
                 }
                 return ListView.builder(
                     itemCount: (snapshot.data! as dynamic).docs.length,

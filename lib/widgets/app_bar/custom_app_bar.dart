@@ -1,51 +1,77 @@
-import 'package:fake_vision/utils/app_export.dart';
+import 'package:fake_vision/utils/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-// ignore: must_be_immutable
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final String title;
+  final double paddingTop;
+  final Widget backButtonScreen;
+
   CustomAppBar({
     Key? key,
-    this.height,
-    this.leadingWidth,
-    this.leading,
-    this.title,
-    this.centerTitle,
-    this.actions,
-  }) : super(
-          key: key,
-        );
+    required this.title,
+    this.paddingTop = 0.0,
+    required this.backButtonScreen,
+  }) : super(key: key);
 
-  final double? height;
-
-  final double? leadingWidth;
-
-  final Widget? leading;
-
-  final Widget? title;
-
-  final bool? centerTitle;
-
-  final List<Widget>? actions;
+  @override
+  Size get preferredSize => Size.fromHeight(kToolbarHeight);
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      elevation: 0,
-      toolbarHeight: height ?? 30.v,
+      systemOverlayStyle: SystemUiOverlayStyle(
+        statusBarColor: colorStatusBar,
+        statusBarIconBrightness: Brightness.light,
+      ),
       automaticallyImplyLeading: false,
-      backgroundColor: Colors.transparent,
-      leadingWidth: leadingWidth ?? 0,
-      leading: leading,
-      title: title,
-      titleSpacing: 0,
-      centerTitle: centerTitle ?? false,
-      actions: actions,
+      elevation: 5.0,
+      flexibleSpace: Stack(
+        children: [
+          ClipRect(
+            child: Positioned.fill(
+              child: Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('Images/bg2.jpg'),
+                    fit: BoxFit.cover,
+                    colorFilter: ColorFilter.mode(
+                      Color.fromARGB(255, 34, 34, 34).withOpacity(0.5),
+                      BlendMode.darken,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 1.0, top: paddingTop),
+            child: Row(
+              children: [
+                IconButton(
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: whiteColor,
+                    size: 20,
+                  ),
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => backButtonScreen),
+                    );
+                  },
+                ),
+                SizedBox(width: 7.0), // Add some spacing
+                Text(
+                  title,
+                  style: TextStyle(
+                      fontSize: 17, color: whiteColor, fontFamily: 'Inter'),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
-
-  @override
-  Size get preferredSize => Size(
-        mediaQueryData.size.width,
-        height ?? 30.v,
-      );
 }

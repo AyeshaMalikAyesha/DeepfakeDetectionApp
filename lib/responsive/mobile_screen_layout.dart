@@ -13,6 +13,7 @@ class MobileScreenLayout extends StatefulWidget {
 
 class _MobileScreenLayoutState extends State<MobileScreenLayout> {
   int _page = 0;
+  //late keyword is used to indicate that a variable will be initialized at a later point
   late PageController pageController; // for tabs animation
 
   @override
@@ -34,15 +35,16 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
   }
  
   void navigationTapped(int page) {
-    //Animating Page
+    //Animating Page or change page
     pageController.jumpToPage(page);
   }
 
   @override
   Widget build(BuildContext context) {
+    //AnnotatedRegion<SystemUiOverlayStyle> in Flutter is a widget used to change the appearance of system overlays, specifically the status bar and the navigation bar
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: const SystemUiOverlayStyle(
-        //this color must be equal to the WaterDropNavBar backgroundColor
+  
         systemNavigationBarColor: colorNavBar,
         systemNavigationBarIconBrightness: Brightness.dark,
       ),
@@ -54,6 +56,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
         ),
         bottomNavigationBar: Container(
           decoration: BoxDecoration(gradient: navColor),
+          //CupertinoTabBar is a widget that provides a bottom tab bar with iOS look and style.
           child: CupertinoTabBar(
             inactiveColor: whiteColor,
             activeColor: seaGreen,

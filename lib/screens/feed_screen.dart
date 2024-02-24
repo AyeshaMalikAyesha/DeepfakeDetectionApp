@@ -15,6 +15,7 @@ class FeedScreen extends StatefulWidget {
 class _FeedScreenState extends State<FeedScreen> {
   @override
   Widget build(BuildContext context) {
+    // It is used to get the width of the current screen or window that the app is running on
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(

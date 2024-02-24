@@ -3,7 +3,6 @@ import 'package:fake_vision/responsive/mobile_screen_layout.dart';
 import 'package:fake_vision/responsive/responsive_layout_screen.dart';
 import 'package:fake_vision/responsive/web_screen_layout.dart';
 import 'package:fake_vision/screens/forgot_password_screen.dart';
-import 'package:fake_vision/screens/home/home_screen.dart';
 import 'package:fake_vision/screens/sign_up_screen.dart';
 import 'package:fake_vision/utils/colors.dart';
 import 'package:fake_vision/utils/global_variables.dart';
@@ -12,6 +11,7 @@ import 'package:fake_vision/widgets/text_field_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+//stateful widget is mutable based on user's interaction
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -51,17 +51,6 @@ class _LoginScreenState extends State<LoginScreen> {
       password: _passwordController.text,
     );
 
-    if (_emailController.text == "fake_vision.admin76@gmail.com" &&
-        _passwordController.text == "admin1234") {
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(
-          builder: (context) => HomeScreen(),
-        ),
-        (route) => false,
-      );
-      res = "Success";
-    }
-
     if (res == 'success') {
       if (context.mounted) {
         Navigator.of(context).pushAndRemoveUntil(
@@ -92,10 +81,14 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+//The BuildContext show where a specific widget is positioned within tree.
   @override
   Widget build(BuildContext context) {
+    //scaffold is useful widget that is used to create basic app structure
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset:
+          false, //screen will not resize when keyboard appears
+      // SafeArea ensures that the Scaffold doesn't overlap with the top status bar or the bottom navigation area on devices
       body: SafeArea(
         child: Container(
           decoration: BoxDecoration(
@@ -110,6 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Color.fromARGB(255, 22, 54, 70) // dark blue
                 ]),
           ),
+          //This line of code is used to dynamically set the padding of a widget in Flutter based on the width of the device's screen.
           padding: MediaQuery.of(context).size.width > webScreenSize
               ? EdgeInsets.symmetric(
                   horizontal: MediaQuery.of(context).size.width / 3)
@@ -160,6 +154,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 150.0),
+                //GestureDetector is a widget in Flutter used to detect and respond to gestures made by the user.
                 child: GestureDetector(
                   onTap: () => Navigator.of(context).push(
                     MaterialPageRoute(
@@ -215,6 +210,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
               Row(
                 children: [
+                  // Expanded widget is used to give a child widget the flexibility to occupy all the available space
                   Expanded(
                     child: Divider(
                       color: grey,
@@ -240,18 +236,8 @@ class _LoginScreenState extends State<LoginScreen> {
               Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
                 CustomSocialButton(
                     icon_img: Image.network(
-                  "https://pngimg.com/uploads/github/small/github_PNG1.png",
-                  fit: BoxFit.cover,
-                )),
-                CustomSocialButton(
-                    icon_img: Image.network(
                         'http://pngimg.com/uploads/google/google_PNG19635.png',
                         fit: BoxFit.cover)),
-                Icon(
-                  Icons.facebook,
-                  size: 46,
-                  color: whiteColor,
-                ),
               ]),
               const SizedBox(
                 height: 12,
