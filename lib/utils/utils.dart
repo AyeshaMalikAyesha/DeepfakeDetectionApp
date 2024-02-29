@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:fake_vision/responsive/mobile_screen_layout.dart';
 import 'package:fake_vision/responsive/responsive_layout_screen.dart';
@@ -6,6 +8,7 @@ import 'package:fake_vision/screens/login_screen.dart';
 import 'package:fake_vision/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:video_player/video_player.dart';
 
 // for picking up image from gallery
 pickImage(ImageSource source) async {
@@ -136,3 +139,80 @@ class CustomSocialButton extends StatelessWidget {
     );
   }
 }
+
+pickVideo() async {
+  final picker = ImagePicker();
+  XFile? videoFile;
+  try {
+    videoFile = await picker.pickVideo(source: ImageSource.gallery);
+    return videoFile!.path;
+  } catch (e) {
+    print("Error Picking Video : $e");
+  }
+}
+
+
+class VideoWidget extends StatefulWidget {
+  final String videoUrl;
+
+  const VideoWidget({Key? key, required this.videoUrl}) : super(key: key);
+
+  @override
+  _VideoWidgetState createState() => _VideoWidgetState();
+}
+
+class _VideoWidgetState extends State<VideoWidget> {
+  late VideoPlayerController _controller;
+  late Future<void> _initializeVideoPlayerFuture;
+  bool _isPlaying = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = VideoPlayerController.network(widget.videoUrl);
+    _initializeVideoPlayerFuture = _controller.initialize();
+    _controller.setLooping(true);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+
+  void _togglePlayPause() {
+    setState(() {
+      if (_controller.value.isPlaying) {
+        _controller.pause();
+        _isPlaying = false;
+      } else {
+        _controller.play();
+        _isPlaying = true;
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+        onTap: _togglePlayPause,
+        child: FutureBuilder(
+          future: _initializeVideoPlayerFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return AspectRatio(
+                aspectRatio: _controller.value.aspectRatio,
+                child: VideoPlayer(_controller),
+              );
+            } else {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        ));
+  }
+}
+
+
+

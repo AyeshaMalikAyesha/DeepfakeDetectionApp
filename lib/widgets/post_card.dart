@@ -143,14 +143,26 @@ class _PostCardState extends State<PostCard> {
             child: Stack(
               alignment: Alignment.center,
               children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.35,
-                  width: double.infinity,
-                  child: Image.network(
-                    widget.snap['postUrl'].toString(),
-                    fit: BoxFit.cover,
+                // Check if the post is an image
+                if (widget.snap['postType'] == 'image')
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.50,
+                    width: double.infinity,
+                    child: Image.network(
+                      widget.snap['postUrl'].toString(),
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                ),
+
+                // Check if the post is a video
+                if (widget.snap['postType'] == 'video')
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.50,
+                    width: double.infinity,
+                    child: VideoWidget(
+                      videoUrl: widget.snap['postUrl'].toString(),
+                    ),
+                  ),
                 AnimatedOpacity(
                   duration: const Duration(milliseconds: 200),
                   opacity: isLikeAnimating ? 1 : 0,
@@ -174,6 +186,7 @@ class _PostCardState extends State<PostCard> {
               ],
             ),
           ),
+
           // LIKE, COMMENT SECTION OF THE POST
           Row(
             children: <Widget>[

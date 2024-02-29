@@ -2,6 +2,7 @@ import 'package:anim_search_bar/anim_search_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_vision/screens/profile_screen.dart';
 import 'package:fake_vision/utils/colors.dart';
+import 'package:fake_vision/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -61,7 +62,8 @@ class _SearchScreenState extends State<SearchScreen> {
         ),
       ),
       body: isShowUsers
-          ? FutureBuilder(//FutureBuilder is useful for any UI that depends on asynchronous data
+          ? FutureBuilder(
+              //FutureBuilder is useful for any UI that depends on asynchronous data
               future: FirebaseFirestore.instance
                   .collection('users')
                   .where('username',
@@ -104,17 +106,31 @@ class _SearchScreenState extends State<SearchScreen> {
               future: FirebaseFirestore.instance.collection('posts').get(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  return const Center(
+                  return Center(
                     child: CircularProgressIndicator(),
                   );
                 }
+
                 return MasonryGridView.count(
                   crossAxisCount: 3,
                   itemCount: (snapshot.data! as dynamic).docs.length,
-                  itemBuilder: (context, index) => Image.network(
-                    (snapshot.data! as dynamic).docs[index]['postUrl'],
-                    fit: BoxFit.cover,
-                  ),
+                  itemBuilder: (context, index) {
+                    final postType =
+                        (snapshot.data! as dynamic).docs[index]['postType'];
+                    final postUrl =
+                        (snapshot.data! as dynamic).docs[index]['postUrl'];
+
+                    if (postType == 'image') {
+                      return Image.network(
+                        postUrl,
+                        fit: BoxFit.cover,
+                      );
+                    } else if (postType == 'video') {
+                      return VideoWidget(videoUrl: postUrl);
+                    }
+
+                    return SizedBox(); // Return empty SizedBox for other post types
+                  },
                   mainAxisSpacing: 8.0,
                   crossAxisSpacing: 8.0,
                 );

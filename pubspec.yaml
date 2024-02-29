@@ -51,7 +51,6 @@ dependencies:
   shared_preferences: ^2.0.11
   swipeable_button_view: null
   uuid: ^4.1.0
-  video_player: ^2.7.2
   cached_network_image: ^3.2.1
   gauge_indicator: ^0.4.3
   syncfusion_flutter_gauges: ^23.2.7
@@ -68,7 +67,9 @@ dependencies:
   build_runner: ^2.4.7
   json_serializable: ^6.7.1
   json_annotation: ^4.8.1
-  
+  file_picker: ^3.0.1
+  chewie: ^1.2.2
+  video_player: ^2.8.2
  
 
 

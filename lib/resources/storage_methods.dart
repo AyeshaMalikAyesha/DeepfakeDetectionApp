@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,7 +19,7 @@ class StorageMethods {
 
     if (isPost) {
       String id = const Uuid().v1();
-      ref=ref.child(id);
+      ref = ref.child(id);
     }
 
     // putting in uint8list format -> Upload task like a future but not future
@@ -27,5 +28,22 @@ class StorageMethods {
     TaskSnapshot snapshot = await uploadTask;
     String downloadUrl = await snapshot.ref.getDownloadURL();
     return downloadUrl;
+  }
+
+ 
+
+  Future<String> uploadVideoToStorage(
+      String folderName, String videoUrl, bool isPost) async {
+    try {
+      String fileName = Uuid().v1();
+      Reference ref = _storage.ref().child('$folderName/$fileName.mp4');
+
+      UploadTask uploadTask = ref.putFile(File(videoUrl));
+      TaskSnapshot taskSnapshot = await uploadTask;
+      String downloadURL = await ref.getDownloadURL();
+      return downloadURL;
+    } catch (error) {
+      throw 'Failed to upload video: $error';
+    }
   }
 }

@@ -15,12 +15,13 @@ class FirestoreMethods {
     String uid,
     String username,
     String profileImage,
+    String postType,
   ) async {
     String result = "some error occured";
     try {
       String photoUrl =
           await StorageMethods().uploadImageToStorage('posts', file, true);
-          // String photoUrl = await StorageMethods().uploadFileToStorage('posts', file, true);
+      // String photoUrl = await StorageMethods().uploadFileToStorage('posts', file, true);
 
       String postId = const Uuid().v1();
 
@@ -32,11 +33,49 @@ class FirestoreMethods {
           datePublished: DateTime.now(),
           postUrl: photoUrl,
           profileImage: profileImage,
-          likes: []);
+          likes: [],
+          postType: postType);
 
       _firestore.collection('posts').doc(postId).set(
             post.toJson(),
           );
+      result = "success";
+    } catch (err) {
+      result = err.toString();
+    }
+    return result;
+  }
+
+  
+
+  Future<String> uploadVideo(
+    String description,
+    String videoDownloadUrl,
+    String uid,
+    String username,
+    String profileImage,
+    String postType
+  ) async {
+    String result = "some error occurred";
+    try {
+      String videoUrl =
+          await StorageMethods().uploadVideoToStorage('posts', videoDownloadUrl, true);
+
+      String postId = Uuid().v1();
+
+      Post post = Post(
+        description: description,
+        uid: uid,
+        username: username,
+        postId: postId,
+        datePublished: DateTime.now(),
+        postUrl: videoUrl,
+        profileImage: profileImage,
+        likes: [],
+        postType:postType
+      );
+      await _firestore.collection('posts').doc(postId).set(post.toJson());
+
       result = "success";
     } catch (err) {
       result = err.toString();
@@ -96,7 +135,7 @@ class FirestoreMethods {
     return res;
   }
 
- // Delete Post
+  // Delete Post
   Future<String> deletePost(String postId) async {
     String res = "Some error occurred";
     try {

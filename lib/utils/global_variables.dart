@@ -14,7 +14,7 @@ List<Widget> homeScreenItems = [
   const SearchScreen(),
   const AddPostScreen(),
   const FeedScreen(),
-   ProfileScreenWrapper(),
+  ProfileScreenWrapper(),
 ];
 
 class ProfileScreenWrapper extends StatelessWidget {
@@ -33,4 +33,3 @@ class ProfileScreenWrapper extends StatelessWidget {
     );
   }
 }
-

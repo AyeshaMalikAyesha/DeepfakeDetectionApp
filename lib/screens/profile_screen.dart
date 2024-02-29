@@ -161,181 +161,202 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 paddingTop: 5,
                 backButtonScreen: MobileScreenLayout(),
               ),
-              body: Container(
-                width: double.maxFinite,
-                child: Column(
-                  children: [
-                    _buildProfileImg(context),
-                    SizedBox(height: 9.v),
-                    Text(
-                      userData['username'],
-                      style: CustomTextStyles.titleMediumPrimary,
-                    ),
-                    SizedBox(height: 7.v),
-                    Text(
-                      userData['bio'],
-                      style: theme.textTheme.labelLarge,
-                    ),
-                    SizedBox(height: 2.v),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 129.h),
+              body: SingleChildScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
+                child: Container(
+                  width: double.maxFinite,
+                  child: Column(
+                    children: [
+                      _buildProfileImg(context),
+                      SizedBox(height: 9.v),
+                      Text(
+                        userData['username'],
+                        style: CustomTextStyles.titleMediumPrimary,
                       ),
-                    ),
-                    SizedBox(height: 11.v),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 74.h),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Spacer(
-                            flex: 50,
-                          ),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              buildStatColumn(postLength, "posts"),
-                            ],
-                          ),
-                          Spacer(
-                            flex: 50,
-                          ),
-                        ],
+                      SizedBox(height: 7.v),
+                      Text(
+                        userData['bio'],
+                        style: theme.textTheme.labelLarge,
                       ),
-                    ),
-                    SizedBox(height: 13.v),
-                    Visibility(
-                      visible:
-                          FirebaseAuth.instance.currentUser!.uid == widget.uid,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          InkWell(
-                            onTap: editProfile,
-                            child: Container(
-                              alignment: Alignment.center,
-                              height: 30,
-                              width: 100,
-                              margin: const EdgeInsets.only(top: 12, left: 70),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(25),
-                                gradient: LinearGradient(
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                    colors: [
-                                      Color.fromRGBO(
-                                          53, 102, 172, 1), // light blue
-                                      Color.fromARGB(
-                                          255, 106, 175, 169) // dark blue
-                                    ]),
-                              ),
-                              child: !_isLoading
-                                  ? Text(
-                                      'Edit Profile',
-                                      style: theme.textTheme.titleSmall,
-                                    )
-                                  : const CircularProgressIndicator(
-                                      color: primaryColor,
-                                    ),
+                      SizedBox(height: 2.v),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 129.h),
+                        ),
+                      ),
+                      SizedBox(height: 11.v),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 74.h),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Spacer(
+                              flex: 50,
                             ),
-                          ),
-                          InkWell(
-                            onTap: signoutUser,
-                            child: Container(
-                              alignment: Alignment.center,
-                              height: 30,
-                              width: 100,
-                              margin: const EdgeInsets.only(top: 12, right: 70),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(25),
-                                gradient: LinearGradient(
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                    colors: [
-                                      Color.fromRGBO(
-                                          53, 102, 172, 1), // light blue
-                                      Color.fromARGB(
-                                          255, 106, 175, 169) // dark blue
-                                    ]),
-                              ),
-                              child: !_isLoading
-                                  ? Text(
-                                      'Sign out',
-                                      style: theme.textTheme.titleSmall,
-                                    )
-                                  : const CircularProgressIndicator(
-                                      color: primaryColor,
-                                    ),
+                            Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                buildStatColumn(postLength, "posts"),
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 28.v),
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: 31.h,
-                        right: 80.h,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(top: 1.v, left: 0.1),
-                            child: Text(
-                              "Posts",
-                              style: CustomTextStyles.titleSmallPrimary,
+                            Spacer(
+                              flex: 50,
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 3.v),
-                    Divider(
-                      indent: 5.h,
-                      endIndent: 5.h,
-                      color: Colors.grey,
-                    ),
-                    FutureBuilder(
-                      future: FirebaseFirestore.instance
-                          .collection('posts')
-                          .where('uid', isEqualTo: widget.uid)
-                          .get(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-
-                        return GridView.builder(
-                          shrinkWrap: true,
-                          itemCount: (snapshot.data! as dynamic).docs.length,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            crossAxisSpacing: 5,
-                            mainAxisSpacing: 1.5,
-                            childAspectRatio: 1,
-                          ),
-                          itemBuilder: (context, index) {
-                            DocumentSnapshot snap =
-                                (snapshot.data! as dynamic).docs[index];
-
-                            return SizedBox(
-                              child: Image(
-                                image: NetworkImage(snap['postUrl']),
-                                fit: BoxFit.cover,
+                      SizedBox(height: 13.v),
+                      Visibility(
+                        visible: FirebaseAuth.instance.currentUser!.uid ==
+                            widget.uid,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            InkWell(
+                              onTap: editProfile,
+                              child: Container(
+                                alignment: Alignment.center,
+                                height: 30,
+                                width: 100,
+                                margin:
+                                    const EdgeInsets.only(top: 12, left: 70),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(25),
+                                  gradient: LinearGradient(
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.centerRight,
+                                      colors: [
+                                        Color.fromRGBO(
+                                            53, 102, 172, 1), // light blue
+                                        Color.fromARGB(
+                                            255, 106, 175, 169) // dark blue
+                                      ]),
+                                ),
+                                child: !_isLoading
+                                    ? Text(
+                                        'Edit Profile',
+                                        style: theme.textTheme.titleSmall,
+                                      )
+                                    : const CircularProgressIndicator(
+                                        color: primaryColor,
+                                      ),
                               ),
+                            ),
+                            InkWell(
+                              onTap: signoutUser,
+                              child: Container(
+                                alignment: Alignment.center,
+                                height: 30,
+                                width: 100,
+                                margin:
+                                    const EdgeInsets.only(top: 12, right: 70),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(25),
+                                  gradient: LinearGradient(
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.centerRight,
+                                      colors: [
+                                        Color.fromRGBO(
+                                            53, 102, 172, 1), // light blue
+                                        Color.fromARGB(
+                                            255, 106, 175, 169) // dark blue
+                                      ]),
+                                ),
+                                child: !_isLoading
+                                    ? Text(
+                                        'Sign out',
+                                        style: theme.textTheme.titleSmall,
+                                      )
+                                    : const CircularProgressIndicator(
+                                        color: primaryColor,
+                                      ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 28.v),
+                      Padding(
+                        padding: EdgeInsets.only(
+                          left: 31.h,
+                          right: 80.h,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(top: 1.v, left: 0.1),
+                              child: Text(
+                                "Posts",
+                                style: CustomTextStyles.titleSmallPrimary,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 3.v),
+                      Divider(
+                        indent: 5.h,
+                        endIndent: 5.h,
+                        color: Colors.grey,
+                      ),
+                      FutureBuilder(
+                        future: FirebaseFirestore.instance
+                            .collection('posts')
+                            .where('uid', isEqualTo: widget.uid)
+                            .get(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
                             );
-                          },
-                        );
-                      },
-                    )
-                  ],
+                          }
+
+                          return GridView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: (snapshot.data! as dynamic).docs.length,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                              crossAxisSpacing: 5,
+                              mainAxisSpacing: 1.5,
+                              childAspectRatio: 1,
+                            ),
+                            itemBuilder: (context, index) {
+                              DocumentSnapshot snap =
+                                  (snapshot.data! as dynamic).docs[index];
+
+                              // Check the type of post
+                              if (snap['postType'] == 'image') {
+                                // Display image
+                                return SizedBox(
+                                  child: Image(
+                                    image: NetworkImage(snap['postUrl']),
+                                    fit: BoxFit.cover,
+                                  ),
+                                );
+                              } else if (snap['postType'] == 'video') {
+                                // Display video
+                                return VideoWidget(videoUrl: snap['postUrl']);
+                              } else {
+                                // Handle other types of posts or unknown types
+                                return Container(
+                                  color: Colors.red,
+                                  child: Center(
+                                    child: Text('Unsupported post type'),
+                                  ),
+                                );
+                              }
+                            },
+                          );
+                        },
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
