@@ -1,6 +1,6 @@
 import 'package:fake_vision/firebase_options.dart';
 import 'package:fake_vision/providers/user_provider.dart';
-import 'package:fake_vision/screens/splash_screen.dart';
+import 'package:fake_vision/screens/scan_screen.dart';
 import 'package:fake_vision/utils/colors.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -63,7 +63,7 @@ class MyApp extends StatelessWidget {
           ],
           child: GetMaterialApp(
             debugShowCheckedModeBanner: false,
-            home: SplashScreen(),
+            home: ScanScreen(),
           ),
         );
       },

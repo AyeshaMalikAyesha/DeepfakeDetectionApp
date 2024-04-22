@@ -50,7 +50,7 @@ android {
         applicationId "com.example.fake_vision"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion 19
+        minSdkVersion 29
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -64,6 +64,7 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+    
 }
 
 flutter {
@@ -74,4 +75,5 @@ dependencies {
     implementation platform("com.google.firebase:firebase-bom:32.3.1")
     implementation "com.google.firebase:firebase-analytics"
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.20"
 }

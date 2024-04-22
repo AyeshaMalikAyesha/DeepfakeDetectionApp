@@ -70,7 +70,9 @@ dependencies:
   file_picker: ^3.0.1
   chewie: ^1.2.2
   video_player: ^2.8.2
- 
+  tflite_flutter: ^0.10.4
+  image: ^4.1.7
+  
 
 
   
@@ -80,6 +82,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: "^0.13.1"
+  http: ^1.1.0
 
   
 

@@ -1,11 +1,15 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:fake_vision/screens/output_screen.dart';
 import 'package:fake_vision/theme/theme_helper.dart';
 import 'package:fake_vision/utils/colors.dart';
 import 'package:fake_vision/utils/global_variables.dart';
 import 'package:fake_vision/utils/utils.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:video_player/video_player.dart';
 
 class ScanScreen extends StatefulWidget {
   const ScanScreen({super.key});
@@ -16,13 +20,17 @@ class ScanScreen extends StatefulWidget {
 
 class _ScanScreenState extends State<ScanScreen> {
   final TextEditingController _linkController = TextEditingController();
-
   bool _isLoading = false;
   Uint8List? _image;
+  String videoPath = 'https://www.example.com/';
+  String output = 'Initial Output';
+  var data;
+
+  // Initialize video player
+  late VideoPlayerController _videoController;
 
   void initState() {
     super.initState();
-
     // Set the status bar color when the screen is created
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: colorStatusBar, // Set your desired status bar color
@@ -34,6 +42,8 @@ class _ScanScreenState extends State<ScanScreen> {
   void dispose() {
     super.dispose();
     _linkController.dispose();
+    // Dispose of the video player when the widget is disposed.
+    _videoController.dispose();
   }
 
   void scan() async {
@@ -62,6 +72,20 @@ class _ScanScreenState extends State<ScanScreen> {
     setState(() {
       _image = im;
     });
+  }
+
+  Future<void> _selectVideo() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.video,
+      allowCompression: true,
+    );
+
+    if (result != null) {
+      PlatformFile file = result.files.first;
+      setState(() {
+        videoPath = file.path!;
+      });
+    }
   }
 
   @override
@@ -97,7 +121,6 @@ class _ScanScreenState extends State<ScanScreen> {
                   'Scan & Detect Deepfakes',
                   style: TextStyle(
                     fontSize: 34.0,
-
                     fontFamily: 'Inter',
                     // The color must be set to white for the gradient to show
                     color: Colors.white,
@@ -122,20 +145,59 @@ class _ScanScreenState extends State<ScanScreen> {
                 child: TextField(
                   controller: _linkController,
                   decoration: InputDecoration(
-                    hintText: 'https://www.example.com/',
+                    hintText: videoPath,
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
                     border: InputBorder.none,
                     suffixIcon: IconButton(
-                      onPressed: selectImage,
+                      onPressed: _selectVideo,
                       icon: const Icon(Icons.file_upload),
                     ),
                   ),
                   keyboardType: TextInputType.text,
+                  onChanged: (value) {
+                    // No need to update the URL here
+                  },
                 ),
               ),
               const SizedBox(
                 height: 24,
+              ),
+              TextButton(
+                onPressed: () async {
+                  if (videoPath.isNotEmpty) {
+                    var request = http.MultipartRequest(
+        'POST', Uri.parse('http://10.0.2.2:5000/predict_video'));
+    
+    // Add the video file to the request
+    request.files.add(await http.MultipartFile.fromPath('file', videoPath));
+
+    // Send the request
+    var streamedResponse = await request.send();
+    
+    // Get the response
+    var response = await http.Response.fromStream(streamedResponse);
+    
+    // Parse the response data
+    var decoded = jsonDecode(response.body);
+    
+    // Update the output state
+    setState(() {
+      output = decoded['output'];
+    });
+                  } else {
+                    // Show an error message or handle the case where no video is selected
+                    print("no video selected");
+                  }
+                },
+                child: Text(
+                  'Scan',
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
+              Text(
+                output,
+                style: TextStyle(fontSize: 40, color: Colors.green),
               ),
               InkWell(
                 onTap: scan,
