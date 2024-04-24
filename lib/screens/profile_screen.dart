@@ -37,7 +37,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       _isLoading = true;
     });
     try {
-      print(widget.uid);
+     
       var userSnap = await FirebaseFirestore.instance
           .collection('users')
           .doc(widget.uid)
@@ -122,7 +122,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (context.mounted) {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => EditProfileScreen(),
+          builder: (context) => EditProfileScreen(uid: widget.uid),
         ),
       );
     }
