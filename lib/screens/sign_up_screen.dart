@@ -126,7 +126,7 @@ class _SignupScreenState extends State<SignupScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 32),
           width: double.infinity,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Flexible(
                 flex: 2,
@@ -139,46 +139,49 @@ class _SignupScreenState extends State<SignupScreen> {
                   end: Alignment.bottomCenter,
                 ).createShader(bounds),
                 child: Text(
-                  'FakeVision',
+                  'Let\'s Get Started',
                   style: TextStyle(
-                    fontSize: 60.0,
-                    fontFamily: 'Coniferous',
+                    fontSize: 25.0,
+                    fontFamily: 'Inter',
                     // The color must be set to white for the gradient to show
                     color: Colors.white,
                   ),
                 ),
               ),
               Text(
-                "Create Account",
+                "Get registered and continue with us!",
                 style: TextStyle(
-                    fontSize: 15, color: whiteColor, fontFamily: 'Inter'),
+                    fontSize: 13, color: whiteColor, fontFamily: 'Inter'),
               ),
               const SizedBox(
                 height: 34,
               ),
-              Stack(
-                children: [
-                  _image != null
-                      ? CircleAvatar(
-                          radius: 64,
-                          backgroundImage: MemoryImage(_image!),
-                          backgroundColor: Color.fromARGB(255, 54, 114, 244),
-                        )
-                      : const CircleAvatar(
-                          radius: 64,
-                          backgroundImage: NetworkImage(
-                              'https://i.stack.imgur.com/l60Hf.png'),
-                          backgroundColor: Colors.blue,
-                        ),
-                  Positioned(
-                    bottom: -10,
-                    left: 80,
-                    child: IconButton(
-                      onPressed: selectImage,
-                      icon: const Icon(Icons.add_a_photo),
-                    ),
-                  )
-                ],
+              Center(
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    _image != null
+                        ? CircleAvatar(
+                            radius: 64,
+                            backgroundImage: MemoryImage(_image!),
+                            backgroundColor: Color.fromARGB(255, 54, 114, 244),
+                          )
+                        : const CircleAvatar(
+                            radius: 64,
+                            backgroundImage: NetworkImage(
+                                'https://i.stack.imgur.com/l60Hf.png'),
+                            backgroundColor: Colors.blue,
+                          ),
+                    Positioned(
+                      bottom: -10,
+                      left: 80,
+                      child: IconButton(
+                        onPressed: selectImage,
+                        icon: const Icon(Icons.add_a_photo),
+                      ),
+                    )
+                  ],
+                ),
               ),
               const SizedBox(
                 height: 24,

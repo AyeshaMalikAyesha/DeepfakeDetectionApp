@@ -112,13 +112,36 @@ class _LoginScreenState extends State<LoginScreen> {
           width: double.infinity,
 
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              //image
-              Image.asset('Images/app_logo-removebg.png'),
-
+              Column(crossAxisAlignment: CrossAxisAlignment.start,
+              
+            children: [
               const SizedBox(
-                height: 64,
+                height: 57,
+              ),
+               ShaderMask(
+                shaderCallback: (bounds) => LinearGradient(
+                  colors: [blue, green],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ).createShader(bounds),
+                child: Text(
+                  'Welcome',
+                  style: TextStyle(
+                    fontSize: 35.0,
+                    fontFamily: 'Inter',
+                    // The color must be set to white for the gradient to show
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              Text('Enter your Credentials',style:TextStyle(fontSize:15,fontFamily:'Inter',color:whiteColor)),
+
+            ],),
+              
+              const SizedBox(
+                height: 97,
               ),
 
               //Text field input for email
@@ -153,7 +176,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 10,
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 150.0),
+                padding: const EdgeInsets.only(left: 180.0),
                 //GestureDetector is a widget in Flutter used to detect and respond to gestures made by the user.
                 child: GestureDetector(
                   onTap: () => Navigator.of(context).push(
@@ -167,8 +190,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: blue,
                       fontSize: 13,
                       fontFamily: 'Inter',
-                      decoration: TextDecoration
-                          .underline, // Add underline for better indication
+                       // Add underline for better indication
                     ),
                   ),
                 ),
@@ -208,37 +230,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 12,
               ),
 
-              Row(
-                children: [
-                  // Expanded widget is used to give a child widget the flexibility to occupy all the available space
-                  Expanded(
-                    child: Divider(
-                      color: grey,
-                    ),
-                  ),
-                  SizedBox(width: 10),
-                  Text(
-                    "OR",
-                    style: TextStyle(color: grey, fontFamily: 'Inter'),
-                  ),
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: Divider(
-                      color: grey,
-                    ),
-                  ),
-                ],
-              ),
+            
               SizedBox(
                 height: 12,
               ),
               //google icon
-              Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-                CustomSocialButton(
-                    icon_img: Image.network(
-                        'http://pngimg.com/uploads/google/google_PNG19635.png',
-                        fit: BoxFit.cover)),
-              ]),
+              
               const SizedBox(
                 height: 12,
               ),
