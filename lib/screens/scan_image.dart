@@ -1,5 +1,6 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'dart:io';
+
 import 'package:fake_vision/screens/output_screen.dart';
 import 'package:fake_vision/theme/theme_helper.dart';
 import 'package:fake_vision/utils/colors.dart';
@@ -8,6 +9,7 @@ import 'package:fake_vision/utils/utils.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
 
@@ -19,11 +21,10 @@ class ScanImage extends StatefulWidget {
 }
 
 class _ScanImageState extends State<ScanImage> {
-  final TextEditingController _linkController = TextEditingController();
   bool _isLoading = false;
   Uint8List? _image;
-  String videoPath = 'https://www.example.com/';
-  String output = 'Initial Output';
+  String image_path='';
+  String output = '';
   var data;
 
   // Initialize video player
@@ -41,9 +42,6 @@ class _ScanImageState extends State<ScanImage> {
   @override
   void dispose() {
     super.dispose();
-    _linkController.dispose();
-    // Dispose of the video player when the widget is disposed.
-    _videoController.dispose();
   }
 
   void scan() async {
@@ -65,28 +63,20 @@ class _ScanImageState extends State<ScanImage> {
       _isLoading = false;
     });
   }
-
-  selectImage() async {
-    Uint8List im = await pickImage(ImageSource.gallery);
-    // set state because we need to display the image we selected on the circle avatar
-    setState(() {
-      _image = im;
-    });
-  }
-
-  Future<void> _selectVideo() async {
+Future<void> _selectImage() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.video,
+      type: FileType.image,
       allowCompression: true,
     );
 
     if (result != null) {
       PlatformFile file = result.files.first;
       setState(() {
-        videoPath = file.path!;
+        image_path = file.path!;
       });
     }
   }
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -103,14 +93,9 @@ class _ScanImageState extends State<ScanImage> {
           ),
           padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 2),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.asset('Images/app_logo-removebg.png',
-                  width: 140, height: 140),
-              Flexible(
-                flex: 0,
-                child: Container(),
-              ),
+              const SizedBox(height: 50),
               ShaderMask(
                 shaderCallback: (bounds) => LinearGradient(
                   colors: [blue, green],
@@ -118,7 +103,7 @@ class _ScanImageState extends State<ScanImage> {
                   end: Alignment.bottomCenter,
                 ).createShader(bounds),
                 child: Text(
-                  'Scan & Detect Deepfakes',
+                  'Scan & Detect Deepfake Images',
                   style: TextStyle(
                     fontSize: 34.0,
                     fontFamily: 'Inter',
@@ -127,78 +112,22 @@ class _ScanImageState extends State<ScanImage> {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 60,
-              ),
+
               Text(
                 "Upload Image",
-                style: theme.textTheme.bodyMedium,
+                style: TextStyle(
+                    fontFamily: 'Inter', fontSize: 20, color: whiteColor),
               ),
-              const SizedBox(
-                height: 20,
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  color: whiteColor,
-                ),
-                child: TextField(
-                  controller: _linkController,
-                  decoration: InputDecoration(
-                    hintText: videoPath,
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
-                    border: InputBorder.none,
-                    suffixIcon: IconButton(
-                      onPressed: _selectVideo,
-                      icon: const Icon(Icons.file_upload),
-                    ),
-                  ),
-                  keyboardType: TextInputType.text,
-                  onChanged: (value) {
-                    // No need to update the URL here
-                  },
-                ),
-              ),
-              const SizedBox(
-                height: 24,
-              ),
-              TextButton(
-                onPressed: () async {
-                  if (videoPath.isNotEmpty) {
-                    var request = http.MultipartRequest(
-        'POST', Uri.parse('http://10.0.2.2:5000/predict_video'));
-    
-    // Add the video file to the request
-    request.files.add(await http.MultipartFile.fromPath('file', videoPath));
 
-    // Send the request
-    var streamedResponse = await request.send();
-    
-    // Get the response
-    var response = await http.Response.fromStream(streamedResponse);
-    
-    // Parse the response data
-    var decoded = jsonDecode(response.body);
-    
-    // Update the output state
-    setState(() {
-      output = decoded['output'];
-    });
-                  } else {
-                    // Show an error message or handle the case where no video is selected
-                    print("No Image selected");
-                  }
-                },
-                child: Text(
-                  'Scan',
-                  style: TextStyle(fontSize: 20),
-                ),
-              ),
-              Text(
-                output,
-                style: TextStyle(fontSize: 40, color: Colors.green),
-              ),
+              IconButton(
+                      icon: Image.asset('Images/upload_image.png',
+                          width: 300, height: 250),
+                      onPressed: _selectImage,
+                    ),
+                  Padding(
+                    padding: const EdgeInsets.only(top:15,left:8.0,right:8,bottom:15),
+                    child: Text(image_path, style: theme.textTheme.bodyMedium),
+                  ),
               InkWell(
                 onTap: scan,
                 child: Container(

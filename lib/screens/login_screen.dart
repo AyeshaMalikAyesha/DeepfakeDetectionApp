@@ -114,34 +114,39 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Column(crossAxisAlignment: CrossAxisAlignment.start,
               
-            children: [
-              const SizedBox(
-                height: 57,
-              ),
-               ShaderMask(
-                shaderCallback: (bounds) => LinearGradient(
-                  colors: [blue, green],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ).createShader(bounds),
-                child: Text(
-                  'Welcome',
-                  style: TextStyle(
-                    fontSize: 35.0,
-                    fontFamily: 'Inter',
-                    // The color must be set to white for the gradient to show
-                    color: Colors.white,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 97,
                   ),
-                ),
+                  ShaderMask(
+                    shaderCallback: (bounds) => LinearGradient(
+                      colors: [blue, green],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ).createShader(bounds),
+                    child: Text(
+                      'Welcome to FakeVision',
+                      style: TextStyle(
+                        fontSize: 23.0,
+                        fontFamily: 'Inter',
+                        // The color must be set to white for the gradient to show
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  Text('Enter your Credentials',
+                      style: TextStyle(
+                          fontSize: 15,
+                          fontFamily: 'Inter',
+                          color: whiteColor)),
+                ],
               ),
-              Text('Enter your Credentials',style:TextStyle(fontSize:15,fontFamily:'Inter',color:whiteColor)),
 
-            ],),
-              
               const SizedBox(
-                height: 97,
+                height: 87,
               ),
 
               //Text field input for email
@@ -176,7 +181,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 10,
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 180.0),
+                padding: const EdgeInsets.only(left: 161.0),
                 //GestureDetector is a widget in Flutter used to detect and respond to gestures made by the user.
                 child: GestureDetector(
                   onTap: () => Navigator.of(context).push(
@@ -190,7 +195,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: blue,
                       fontSize: 13,
                       fontFamily: 'Inter',
-                       // Add underline for better indication
                     ),
                   ),
                 ),
@@ -230,12 +234,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 12,
               ),
 
-            
               SizedBox(
                 height: 12,
               ),
               //google icon
-              
+
               const SizedBox(
                 height: 12,
               ),

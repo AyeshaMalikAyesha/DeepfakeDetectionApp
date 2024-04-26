@@ -2,6 +2,7 @@ import 'package:fake_vision/screens/add_post_screen.dart';
 import 'package:fake_vision/screens/feed_screen.dart';
 import 'package:fake_vision/screens/login_screen.dart';
 import 'package:fake_vision/screens/profile_screen.dart';
+import 'package:fake_vision/screens/scan_image.dart';
 import 'package:fake_vision/screens/scan_screen.dart';
 import 'package:fake_vision/screens/search_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,7 +12,7 @@ const webScreenSize = 500;
 
 List<Widget> homeScreenItems = [
   const ScanScreen(),
-  const SearchScreen(),
+  const ScanImage(),
   const AddPostScreen(),
   const FeedScreen(),
   ProfileScreenWrapper(),

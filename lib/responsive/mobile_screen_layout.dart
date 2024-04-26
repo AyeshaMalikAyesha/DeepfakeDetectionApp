@@ -64,21 +64,21 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
             items: <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                 icon: Image.asset(
-                  'Images/face-detection.png',
-                  width: 25,
+                  'Images/video_detection.png',
+                  width: 33,
                   color: (_page == 0) ? seaGreen : whiteColor,
                 ),
-                label: 'Scan',
+                label: 'Video',
                 backgroundColor: primaryColor,
                 // Change the color here
               ),
               BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.search,
-                    size: 30,
-                    color: (_page == 1) ? seaGreen : whiteColor,
-                  ),
-                  label: 'Search',
+                  icon: Image.asset(
+                  'Images/face-detection.png',
+                  width: 25,
+                  color: (_page == 1) ? seaGreen : whiteColor,
+                ),
+                  label: 'Image',
                   backgroundColor: primaryColor),
               BottomNavigationBarItem(
                   icon: Icon(

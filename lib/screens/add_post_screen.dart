@@ -472,7 +472,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                       fontSize: 16.sp,
                       title:
                           "Upload Image or Video to create deepfake awareness among community",
-                      text0verFlow: TextOverflow.ellipsis,
+                      textOverFlow: TextOverflow.ellipsis,
                       maxline: 5,
                     ),
                     Lottie.asset(

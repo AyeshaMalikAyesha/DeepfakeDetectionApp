@@ -11,7 +11,7 @@ class CustomText extends StatelessWidget {
     required this.fontSize,
     required this.title,
     required this.maxline,
-    required this.text0verFlow,
+    required this.textOverFlow,
     this.textAlign = TextAlign.center,
     this.textStyle = GoogleFonts.quicksand,
   });
@@ -21,7 +21,7 @@ class CustomText extends StatelessWidget {
   double fontSize;
   String title;
   TextAlign textAlign;
-  final textStyle, maxline, text0verFlow;
+  final textStyle, maxline, textOverFlow;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class CustomText extends StatelessWidget {
       // onTap: function,
       child: Text(
         title,
-        overflow: text0verFlow,
+        overflow: textOverFlow,
         maxLines: maxline,
         style: textStyle(
           fontSize: fontSize,

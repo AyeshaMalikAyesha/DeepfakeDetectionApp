@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+
 import 'package:fake_vision/screens/output_screen.dart';
 import 'package:fake_vision/theme/theme_helper.dart';
 import 'package:fake_vision/utils/colors.dart';
@@ -8,6 +8,7 @@ import 'package:fake_vision/utils/utils.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
 
@@ -23,7 +24,7 @@ class _ScanScreenState extends State<ScanScreen> {
   bool _isLoading = false;
   Uint8List? _image;
   String videoPath = 'https://www.example.com/';
-  String output = 'Initial Output';
+  String output = '';
   var data;
 
   // Initialize video player
@@ -166,28 +167,30 @@ class _ScanScreenState extends State<ScanScreen> {
               TextButton(
                 onPressed: () async {
                   if (videoPath.isNotEmpty) {
-                    var request = http.MultipartRequest(
-        'POST', Uri.parse('http://10.0.2.2:5000/predict_video'));
-    
-    // Add the video file to the request
-    request.files.add(await http.MultipartFile.fromPath('file', videoPath));
+                    var request = http.MultipartRequest('POST',
+                        Uri.parse('http://10.0.2.2:5000/predict_video'));
 
-    // Send the request
-    var streamedResponse = await request.send();
-    
-    // Get the response
-    var response = await http.Response.fromStream(streamedResponse);
-    
-    // Parse the response data
-    var decoded = jsonDecode(response.body);
-    
-    // Update the output state
-    setState(() {
-      output = decoded['output'];
-    });
+                    // Add the video file to the request
+                    request.files.add(
+                        await http.MultipartFile.fromPath('file', videoPath));
+
+                    // Send the request
+                    var streamedResponse = await request.send();
+
+                    // Get the response
+                    var response =
+                        await http.Response.fromStream(streamedResponse);
+
+                    // Parse the response data
+                    var decoded = jsonDecode(response.body);
+
+                    // Update the output state
+                    setState(() {
+                      output = decoded['output'];
+                    });
                   } else {
                     // Show an error message or handle the case where no video is selected
-                    print("no video selected");
+                    showSnackBar(context,"no video selected");
                   }
                 },
                 child: Text(

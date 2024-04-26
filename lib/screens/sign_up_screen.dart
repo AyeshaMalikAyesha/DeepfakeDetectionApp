@@ -1,6 +1,7 @@
 import 'package:fake_vision/resources/auth_methods.dart';
 import 'package:fake_vision/screens/login_screen.dart';
 import 'package:fake_vision/utils/colors.dart';
+import 'package:fake_vision/utils/global_variables.dart';
 import 'package:fake_vision/utils/utils.dart';
 import 'package:fake_vision/widgets/text_field_input.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
   bool _isLoading = false;
-  //The Uint8List is particularly useful when you are dealing with binary data or 
+  //The Uint8List is particularly useful when you are dealing with binary data or
   //interfacing with lower-level APIs, such as working with images, files, or network data.
   Uint8List? _image;
 
@@ -92,7 +93,8 @@ class _SignupScreenState extends State<SignupScreen> {
         _isLoading = false;
       });
       // show the error
-      if (context.mounted) {//will return true if widget is in tree
+      if (context.mounted) {
+        //will return true if widget is in tree
         showSnackBar(context, res);
       }
     }
@@ -112,6 +114,7 @@ class _SignupScreenState extends State<SignupScreen> {
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Container(
+         
           decoration: BoxDecoration(
             image: DecorationImage(
                 image: AssetImage('Images/bg16.png'), fit: BoxFit.fill),
@@ -123,7 +126,11 @@ class _SignupScreenState extends State<SignupScreen> {
                   Color.fromARGB(255, 22, 54, 70) // dark blue
                 ]),
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 32),
+           padding: MediaQuery.of(context).size.width > webScreenSize
+              ? EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width / 3)
+              : const EdgeInsets.symmetric(horizontal: 42),
+          //full width of device
           width: double.infinity,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
