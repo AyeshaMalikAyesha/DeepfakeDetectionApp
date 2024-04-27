@@ -128,25 +128,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  void scan() async {
-    // set loading to true
-    setState(() {
-      _isLoading = true;
-    });
-
-    // Navigate to the ProfileScreen
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-          builder: (context) => ProfileScreen(
-                uid: FirebaseAuth.instance.currentUser!.uid,
-              )),
-    );
-
-    // set loading to false after navigation
-    setState(() {
-      _isLoading = false;
-    });
-  }
+  
 
   @override
   Widget build(BuildContext context) {
