@@ -113,209 +113,207 @@ class _SignupScreenState extends State<SignupScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
-        child: Container(
-         
-          decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage('Images/bg16.png'), fit: BoxFit.fill),
-            gradient: LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                colors: [
-                  Color.fromRGBO(20, 37, 83, 1), // light blue
-                  Color.fromARGB(255, 22, 54, 70) // dark blue
-                ]),
-          ),
-           padding: MediaQuery.of(context).size.width > webScreenSize
-              ? EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width / 3)
-              : const EdgeInsets.symmetric(horizontal: 42),
-          //full width of device
-          width: double.infinity,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Flexible(
-                flex: 2,
-                child: Container(),
-              ),
-              ShaderMask(
-                shaderCallback: (bounds) => LinearGradient(
-                  colors: [blue, green],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ).createShader(bounds),
-                child: Text(
-                  'Let\'s Get Started',
-                  style: TextStyle(
-                    fontSize: 25.0,
-                    fontFamily: 'Inter',
-                    // The color must be set to white for the gradient to show
-                    color: Colors.white,
+        child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+          child: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('Images/bg16.png'), fit: BoxFit.fill),
+              gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: [
+                    Color.fromRGBO(20, 37, 83, 1), // light blue
+                    Color.fromARGB(255, 22, 54, 70) // dark blue
+                  ]),
+            ),
+            padding: MediaQuery.of(context).size.width > webScreenSize
+                ? EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width / 4)
+                : const EdgeInsets.symmetric(horizontal: 30),
+            //full width of device
+            width: double.infinity,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+      height: 50, // Adjust the height as needed
+    ),
+                ShaderMask(
+                  shaderCallback: (bounds) => LinearGradient(
+                    colors: [blue, green],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ).createShader(bounds),
+                  child: Text(
+                    'Let\'s Get Started',
+                    style: TextStyle(
+                      fontSize: 25.0,
+                      fontFamily: 'Inter',
+                      // The color must be set to white for the gradient to show
+                      color: Colors.white,
+                    ),
                   ),
                 ),
-              ),
-              Text(
-                "Get registered and continue with us!",
-                style: TextStyle(
-                    fontSize: 13, color: whiteColor, fontFamily: 'Inter'),
-              ),
-              const SizedBox(
-                height: 34,
-              ),
-              Center(
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    _image != null
-                        ? CircleAvatar(
-                            radius: 64,
-                            backgroundImage: MemoryImage(_image!),
-                            backgroundColor: Color.fromARGB(255, 54, 114, 244),
-                          )
-                        : const CircleAvatar(
-                            radius: 64,
-                            backgroundImage: NetworkImage(
-                                'https://i.stack.imgur.com/l60Hf.png'),
-                            backgroundColor: Colors.blue,
-                          ),
-                    Positioned(
-                      bottom: -10,
-                      left: 80,
-                      child: IconButton(
-                        onPressed: selectImage,
-                        icon: const Icon(Icons.add_a_photo),
-                      ),
-                    )
-                  ],
+                Text(
+                  "Get registered and continue with us!",
+                  style: TextStyle(
+                      fontSize: 13, color: whiteColor, fontFamily: 'Inter'),
                 ),
-              ),
-              const SizedBox(
-                height: 24,
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(35),
-                  color: whiteColor,
+                const SizedBox(
+                  height: 34,
                 ),
-                child: TextFieldInput(
-                  hintText: 'Enter your username',
-                  textInputType: TextInputType.text,
-                  textEditingController: _usernameController,
+                Center(
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      _image != null
+                          ? CircleAvatar(
+                              radius: 64,
+                              backgroundImage: MemoryImage(_image!),
+                              backgroundColor:
+                                  Color.fromARGB(255, 54, 114, 244),
+                            )
+                          : const CircleAvatar(
+                              radius: 64,
+                              backgroundImage: NetworkImage(
+                                  'https://i.stack.imgur.com/l60Hf.png'),
+                              backgroundColor: Colors.blue,
+                            ),
+                      Positioned(
+                        bottom: -10,
+                        left: 80,
+                        child: IconButton(
+                          onPressed: selectImage,
+                          icon: const Icon(Icons.add_a_photo),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(
-                height: 24,
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(35),
-                  color: whiteColor,
+                const SizedBox(
+                  height: 24,
                 ),
-                child: TextFieldInput(
-                  hintText: 'Enter your email',
-                  textInputType: TextInputType.emailAddress,
-                  textEditingController: _emailController,
-                ),
-              ),
-              const SizedBox(
-                height: 24,
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(35),
-                  color: whiteColor,
-                ),
-                child: TextFieldInput(
-                  hintText: 'Enter your password',
-                  textInputType: TextInputType.text,
-                  textEditingController: _passwordController,
-                  isPassword: true,
-                ),
-              ),
-              const SizedBox(
-                height: 24,
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(35),
-                  color: whiteColor,
-                ),
-                child: TextFieldInput(
-                  hintText: 'Enter your bio',
-                  textInputType: TextInputType.text,
-                  textEditingController: _bioController,
-                ),
-              ),
-              const SizedBox(
-                height: 24,
-              ),
-              InkWell(
-                onTap: sign_up_user,
-                child: Container(
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.symmetric(vertical: 12),
+                Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(35),
-                    gradient: LinearGradient(
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight,
-                        colors: [
-                          Color.fromRGBO(53, 102, 172, 1), // light blue
-                          Color.fromARGB(255, 106, 175, 169) // dark blue
-                        ]),
+                    color: whiteColor,
                   ),
-                  child: !_isLoading
-                      ? const Text('Sign up',
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: 'Inter',
-                              color: whiteColor))
-                      : const CircularProgressIndicator(
-                          color: whiteColor,
-                        ),
+                  child: TextFieldInput(
+                    hintText: 'Enter your username',
+                    textInputType: TextInputType.text,
+                    textEditingController: _usernameController,
+                  ),
                 ),
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              Flexible(
-                flex: 2,
-                child: Container(),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: const Text('Already have an account?',
-                        style: TextStyle(
+                const SizedBox(
+                  height: 24,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(35),
+                    color: whiteColor,
+                  ),
+                  child: TextFieldInput(
+                    hintText: 'Enter your email',
+                    textInputType: TextInputType.emailAddress,
+                    textEditingController: _emailController,
+                  ),
+                ),
+                const SizedBox(
+                  height: 24,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(35),
+                    color: whiteColor,
+                  ),
+                  child: TextFieldInput(
+                    hintText: 'Enter your password',
+                    textInputType: TextInputType.text,
+                    textEditingController: _passwordController,
+                    isPassword: true,
+                  ),
+                ),
+                const SizedBox(
+                  height: 24,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(35),
+                    color: whiteColor,
+                  ),
+                  child: TextFieldInput(
+                    hintText: 'Enter your bio',
+                    textInputType: TextInputType.text,
+                    textEditingController: _bioController,
+                  ),
+                ),
+                const SizedBox(
+                  height: 24,
+                ),
+                InkWell(
+                  onTap: sign_up_user,
+                  child: Container(
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(35),
+                      gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [
+                            Color.fromRGBO(53, 102, 172, 1), // light blue
+                            Color.fromARGB(255, 106, 175, 169) // dark blue
+                          ]),
+                    ),
+                    child: !_isLoading
+                        ? const Text('Sign up',
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontFamily: 'Inter',
+                                color: whiteColor))
+                        : const CircularProgressIndicator(
                             color: whiteColor,
-                            fontFamily: 'Inter',
-                            fontSize: 13)),
+                          ),
                   ),
-                  GestureDetector(
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const LoginScreen(),
-                      ),
-                    ),
-                    child: Container(
+                ),
+                const SizedBox(
+                  height: 77,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: const Text(
-                        ' Login',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: blue,
-                            fontFamily: 'Inter',
-                            fontSize: 13),
+                      child: const Text('Already have an account?',
+                          style: TextStyle(
+                              color: whiteColor,
+                              fontFamily: 'Inter',
+                              fontSize: 13)),
+                    ),
+                    GestureDetector(
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const LoginScreen(),
+                        ),
+                      ),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: const Text(
+                          ' Login',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: blue,
+                              fontFamily: 'Inter',
+                              fontSize: 13),
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

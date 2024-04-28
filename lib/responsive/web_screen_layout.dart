@@ -72,18 +72,23 @@ class _WebScreenLayoutState extends State<WebScreenLayout> {
             ),
             // Actual AppBar content
             Padding(
-              padding: const EdgeInsets.only(left: 10.0, top: 20.0),
+              padding: const EdgeInsets.only(left: 10.0, top: 37.0),
               child: Row(
                 children: [
-                  Image.asset('Images/app_logo-removebg.png'),
-
-                  SizedBox(width: 8.0), // Add some spacing
-                  Text(
-                    "FakeVision",
-                    style: TextStyle(
-                      fontFamily: 'Coniferous',
-                      fontSize: 33,
-                      color: whiteColor,
+                  ShaderMask(
+                    shaderCallback: (bounds) => LinearGradient(
+                      colors: [blue, green],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ).createShader(bounds),
+                    child: Text(
+                      'FakeVision',
+                      style: TextStyle(
+                        fontSize: 23.0,
+                        fontFamily: 'Inter',
+                        // The color must be set to white for the gradient to show
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ],
@@ -94,37 +99,38 @@ class _WebScreenLayoutState extends State<WebScreenLayout> {
         actions: [
           IconButton(
             icon: Image.asset(
-              'Images/face-detection.png',
-              width: 21,
-              color: secondaryColor,
+              'Images/video_detection.png',
+              width: 33,
+              color: (_page == 0) ? seaGreen : whiteColor,
             ),
             onPressed: () => navigationTapped(0),
           ),
           IconButton(
-            icon: Icon(
-              Icons.search,
-              color: _page == 1 ? primaryColor : secondaryColor,
+            icon: Image.asset(
+              'Images/face-detection.png',
+              width: 21,
+              color: (_page == 1) ? seaGreen : whiteColor,
             ),
             onPressed: () => navigationTapped(1),
           ),
           IconButton(
             icon: Icon(
               Icons.add_circle,
-              color: _page == 2 ? primaryColor : secondaryColor,
+              color: (_page == 2) ? seaGreen : whiteColor,
             ),
             onPressed: () => navigationTapped(2),
           ),
           IconButton(
             icon: Icon(
               Icons.group,
-              color: _page == 3 ? primaryColor : secondaryColor,
+              color: (_page == 3) ? seaGreen : whiteColor,
             ),
             onPressed: () => navigationTapped(3),
           ),
           IconButton(
             icon: Icon(
               Icons.person,
-              color: _page == 4 ? primaryColor : secondaryColor,
+              color: (_page == 4) ? seaGreen : whiteColor,
             ),
             onPressed: () => navigationTapped(4),
           ),

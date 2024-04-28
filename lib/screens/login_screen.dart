@@ -106,48 +106,36 @@ class _LoginScreenState extends State<LoginScreen> {
           //This line of code is used to dynamically set the padding of a widget in Flutter based on the width of the device's screen.
           padding: MediaQuery.of(context).size.width > webScreenSize
               ? EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width / 3)
-              : const EdgeInsets.symmetric(horizontal: 42),
+                  horizontal: MediaQuery.of(context).size.width / 4)
+              : const EdgeInsets.symmetric(horizontal: 30),
           //full width of device
           width: double.infinity,
 
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    height: 97,
+              Flexible(child: Container(), flex: 1),
+              ShaderMask(
+                shaderCallback: (bounds) => LinearGradient(
+                  colors: [blue, green],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ).createShader(bounds),
+                child: Text(
+                  'Welcome to FakeVision',
+                  style: TextStyle(
+                    fontSize: 23.0,
+                    fontFamily: 'Inter',
+                    // The color must be set to white for the gradient to show
+                    color: Colors.white,
                   ),
-                  ShaderMask(
-                    shaderCallback: (bounds) => LinearGradient(
-                      colors: [blue, green],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                    ).createShader(bounds),
-                    child: Text(
-                      'Welcome to FakeVision',
-                      style: TextStyle(
-                        fontSize: 23.0,
-                        fontFamily: 'Inter',
-                        // The color must be set to white for the gradient to show
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  Text('Enter your Credentials',
-                      style: TextStyle(
-                          fontSize: 15,
-                          fontFamily: 'Inter',
-                          color: whiteColor)),
-                ],
+                ),
               ),
+              Text('Enter your Credentials',
+                  style: TextStyle(
+                      fontSize: 15, fontFamily: 'Inter', color: whiteColor)),
 
-              const SizedBox(
-                height: 87,
-              ),
+              Flexible(child: Container(), flex: 1),
 
               //Text field input for email
               Container(
@@ -180,25 +168,30 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(
                 height: 10,
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 161.0),
-                //GestureDetector is a widget in Flutter used to detect and respond to gestures made by the user.
-                child: GestureDetector(
-                  onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const ForgotPasswordScreen(),
-                    ),
+              Row(
+                mainAxisAlignment:
+                    MainAxisAlignment.end, // Aligns children to the right side
+                children: [
+                  Spacer(), // Expands to fill the available space
+                  GestureDetector(
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const ForgotPasswordScreen(),
+                      ),
+                    ),// Add right padding
+                      child: Text(
+                        "Forgot Password?",
+                        style: TextStyle(
+                          color: blue,
+                          fontSize: 13,
+                          fontFamily: 'Inter',
+                        ),
+                      ),
+                    
                   ),
-                  child: Text(
-                    "Forgot Password?",
-                    style: TextStyle(
-                      color: blue,
-                      fontSize: 13,
-                      fontFamily: 'Inter',
-                    ),
-                  ),
-                ),
+                ],
               ),
+
               const SizedBox(
                 height: 24,
               ),
@@ -230,18 +223,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                 ),
               ),
-              SizedBox(
-                height: 12,
-              ),
 
-              SizedBox(
-                height: 12,
-              ),
-              //google icon
-
-              const SizedBox(
-                height: 12,
-              ),
               Flexible(child: Container(), flex: 2),
               //transitioning to signup
               Row(
