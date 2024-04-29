@@ -4,11 +4,12 @@ import 'package:fake_vision/providers/user_provider.dart';
 import 'package:fake_vision/resources/firestore_methods.dart';
 import 'package:fake_vision/theme/theme_helper.dart';
 import 'package:fake_vision/utils/colors.dart';
+import 'package:fake_vision/utils/custom_text_style.dart';
+import 'package:fake_vision/utils/global_variables.dart';
 import 'package:fake_vision/utils/utils.dart';
 import 'package:fake_vision/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -222,7 +223,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
   @override
   Widget build(BuildContext context) {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
-
+    final width = MediaQuery.of(context).size.width;
     return _file != null
         ? Scaffold(
             appBar: AppBar(
@@ -242,14 +243,19 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   // Actual AppBar content
 
                   Padding(
-                    padding: const EdgeInsets.only(left: 55.0, top: 44.0),
+                    padding: EdgeInsets.only(
+                      left: 55.0,
+                      top: MediaQuery.of(context).size.width > webScreenSize
+                          ? 17.0
+                          : 44.0,
+                    ),
                     child: Row(
                       children: [
-                        SizedBox(width: 8.0), // Add some spacing
+                        // Add some spacing
                         Text(
                           "Post to",
                           style: TextStyle(
-                            fontSize: 18,
+                            fontSize: 16,
                             fontFamily: 'Inter',
                             color: blackColor,
                           ),
@@ -311,16 +317,14 @@ class _AddPostScreenState extends State<AddPostScreen> {
                             decoration: const InputDecoration(
                                 hintText: "What do you want to talk about?",
                                 hintStyle: TextStyle(fontFamily: 'Inter'),
-                            
                                 border: InputBorder.none),
                             maxLines: 1,
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(height: 30),
                     SizedBox(
-                      height: 155.0,
+                      height: 140.0,
                       width: 135.0,
                       child: AspectRatio(
                         aspectRatio: 387 / 351,
@@ -401,28 +405,24 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   ],
                 ),
                 // POST FORM
-                body: Column(
-                  children: <Widget>[
-                    isLoading
-                        ? const LinearProgressIndicator()
-                        : const Padding(padding: EdgeInsets.only(top: 0.0)),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                userProvider.getUser.photoUrl,
+                body: SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[
+                      isLoading
+                          ? const LinearProgressIndicator()
+                          : const Padding(padding: EdgeInsets.only(top: 0.0)),
+                      Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              CircleAvatar(
+                                backgroundImage: NetworkImage(
+                                  userProvider.getUser.photoUrl,
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.7,
-                              child: TextField(
+                              TextField(
                                 controller: _descriptionController,
                                 decoration: const InputDecoration(
                                     hintText: "What do you want to talk about?",
@@ -430,83 +430,91 @@ class _AddPostScreenState extends State<AddPostScreen> {
                                     border: InputBorder.none),
                                 maxLines: 1,
                               ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 30),
-                        _videoURL != null
-                            ? _videoPreviewWidget()
-                            : const Text("No Video Selected"),
-                      ],
-                    ),
-                  ],
+                            ],
+                          ),
+                          _videoURL != null
+                              ? _videoPreviewWidget()
+                              : const Text("No Video Selected"),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               )
-            : Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage('Images/bg13.png'), fit: BoxFit.fill),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ShaderMask(
-                      shaderCallback: (bounds) => LinearGradient(
-                        colors: [blue, green],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                      ).createShader(bounds),
-                      child: Text(
-                        'Upload Image/Video',
-                        style: TextStyle(
-                          fontSize: 23.0,
-                          fontFamily: 'Inter',
-                          // The color must be set to white for the gradient to show
-                          color: Colors.white,
+            : SingleChildScrollView(
+                child: Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage('Images/bg13.png'), fit: BoxFit.fill),
+                  ),
+                  padding: width > webScreenSize
+                      ? EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width / 5)
+                      : const EdgeInsets.symmetric(
+                          horizontal: 24, vertical: 220),
+                  width: double.infinity,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ShaderMask(
+                        shaderCallback: (bounds) => LinearGradient(
+                          colors: [blue, green],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                        ).createShader(bounds),
+                        child: Text(
+                          'Upload Image/Video',
+                          style: TextStyle(
+                            fontSize: 23.0,
+                            fontFamily: 'Inter',
+                            // The color must be set to white for the gradient to show
+                            color: Colors.white,
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(height: 10),
-                    CustomText(
-                      textColor: whiteColor,
-                      fontSize: 16.sp,
-                      title:
-                          "Upload Image or Video to create deepfake awareness among community",
-                      textOverFlow: TextOverflow.ellipsis,
-                      maxline: 5,
-                    ),
-                    Lottie.asset(
-                      'Images/upload.json',
-                      height: 150,
-                      width: 150,
-                    ),
-                    InkWell(
-                      onTap: () => _selectImageOrVideo(context),
-                      child: Container(
-                        alignment: Alignment.center,
-                        height: 40,
+                      SizedBox(height: 8),
+                      CustomText(
+                        textColor: whiteColor,
+                        fontSize: 16,
+                        title:
+                            "Upload Image or Video to create deepfake awareness among community",
+                        textOverFlow: TextOverflow.ellipsis,
+                        maxline: 5,
+                      ),
+                      Lottie.asset(
+                        'Images/upload.json',
+                        height: 150,
                         width: 150,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(25),
-                          gradient: LinearGradient(
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                              colors: [
-                                Color.fromRGBO(53, 102, 172, 1), // light blue
-                                Color.fromARGB(255, 106, 175, 169) // dark blue
-                              ]),
-                        ),
-                        child: !_isLoading
-                            ? Text(
-                                'Upload',
-                                style: theme.textTheme.titleSmall,
-                              )
-                            : const CircularProgressIndicator(
-                                color: primaryColor,
-                              ),
                       ),
-                    ),
-                  ],
+                      InkWell(
+                        onTap: () => _selectImageOrVideo(context),
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 40,
+                          width: 150,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25),
+                            gradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                colors: [
+                                  Color.fromRGBO(53, 102, 172, 1), // light blue
+                                  Color.fromARGB(
+                                      255, 106, 175, 169) // dark blue
+                                ]),
+                          ),
+                          child: !_isLoading
+                              ? Text(
+                                  'Upload',
+                                  style: smallTextStyle,
+                                )
+                              : const CircularProgressIndicator(
+                                  color: primaryColor,
+                                ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               );
   }

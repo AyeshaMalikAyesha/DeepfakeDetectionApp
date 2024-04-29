@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:fake_vision/screens/output_screen.dart';
-import 'package:fake_vision/theme/theme_helper.dart';
 import 'package:fake_vision/utils/colors.dart';
+import 'package:fake_vision/utils/custom_text_style.dart';
 import 'package:fake_vision/utils/global_variables.dart';
 import 'package:fake_vision/utils/utils.dart';
 import 'package:file_picker/file_picker.dart';
@@ -94,24 +94,23 @@ class _ScanScreenState extends State<ScanScreen> {
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor:
-          width > webScreenSize ? webBackgroundColor : mobileBackgroundColor,
       body: SafeArea(
         child: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
                 image: AssetImage('Images/bg13.png'), fit: BoxFit.fill),
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 2),
+          padding: width > webScreenSize
+              ? EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width / 5)
+              : const EdgeInsets.symmetric(horizontal: 24),
+          width: double.infinity,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset('Images/app_logo-removebg.png',
-                  width: 140, height: 140),
-              Flexible(
-                flex: 0,
-                child: Container(),
-              ),
+              if (width < webScreenSize)
+                Image.asset('Images/app_logo-removebg.png',
+                    width: 140, height: 140),
               ShaderMask(
                 shaderCallback: (bounds) => LinearGradient(
                   colors: [blue, green],
@@ -128,19 +127,31 @@ class _ScanScreenState extends State<ScanScreen> {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 60,
-              ),
-              Text(
-                "Place a Video link or Upload Image/Video",
-                style: theme.textTheme.bodyMedium,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
+              Flexible(child: Container(), flex: 1),
+              width<webScreenSize?Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Place a Video link or Upload a Video",
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 14,
+                    color: whiteColor,
+                  ),
+                  
+                ),
+              ):Text(
+                  "Place a Video link or Upload a Video",
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 14,
+                    color: whiteColor,
+                  ),
+                  
+                ),
+              const SizedBox(height: 6),
               Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
+                  borderRadius: BorderRadius.circular(7),
                   color: whiteColor,
                 ),
                 child: TextField(
@@ -160,9 +171,6 @@ class _ScanScreenState extends State<ScanScreen> {
                     // No need to update the URL here
                   },
                 ),
-              ),
-              const SizedBox(
-                height: 24,
               ),
               TextButton(
                 onPressed: () async {
@@ -190,24 +198,24 @@ class _ScanScreenState extends State<ScanScreen> {
                     });
                   } else {
                     // Show an error message or handle the case where no video is selected
-                    showSnackBar(context,"no video selected");
+                    showSnackBar(context, "no video selected");
                   }
                 },
                 child: Text(
                   'Scan',
-                  style: TextStyle(fontSize: 20),
+                  style: TextStyle(fontSize: 10),
                 ),
               ),
               Text(
                 output,
-                style: TextStyle(fontSize: 40, color: Colors.green),
+                style: TextStyle(fontSize: 10, color: Colors.green),
               ),
               InkWell(
                 onTap: scan,
                 child: Container(
                   width: double.infinity,
                   alignment: Alignment.center,
-                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(35),
                     gradient: LinearGradient(
@@ -221,21 +229,14 @@ class _ScanScreenState extends State<ScanScreen> {
                   child: !_isLoading
                       ? Text(
                           'Scan',
-                          style: theme.textTheme.bodyMedium,
+                          style: smallTextStyle,
                         )
                       : const CircularProgressIndicator(
                           color: whiteColor,
                         ),
                 ),
               ),
-              const SizedBox(
-                height: 12,
-              ),
-              //Flexible: This widget wraps around a child widget to give it flexibility in terms of how it takes up space within a Row, Column, or Flex parent.
-              Flexible(
-                flex: 2,
-                child: Container(),
-              ),
+              Flexible(child: Container(), flex: 3)
             ],
           ),
         ),

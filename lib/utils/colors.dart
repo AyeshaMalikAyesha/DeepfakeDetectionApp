@@ -23,9 +23,4 @@ const dialogColor = RadialGradient(colors: [
 const colorNavBar = Color.fromARGB(255, 5, 53, 90);
 const defaultPadding = 16.0;
 const double defaultBorderRadius = 15;
- TextStyle customTextStyle = TextStyle(
-    // Define your custom style here
-    color: Color.fromARGB(255, 255, 255, 255), // Example color
-    fontFamily: 'Inter',
-    // Add other style properties if needed
-  );
+

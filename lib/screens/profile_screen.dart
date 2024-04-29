@@ -4,8 +4,11 @@ import 'package:fake_vision/resources/auth_methods.dart';
 import 'package:fake_vision/responsive/mobile_screen_layout.dart';
 import 'package:fake_vision/screens/edit_profile_screen.dart';
 import 'package:fake_vision/screens/login_screen.dart';
+import 'package:fake_vision/screens/main_app_screen.dart';
 import 'package:fake_vision/utils/app_export.dart';
 import 'package:fake_vision/utils/colors.dart';
+import 'package:fake_vision/utils/custom_text_style.dart';
+import 'package:fake_vision/utils/global_variables.dart';
 import 'package:fake_vision/utils/utils.dart';
 import 'package:fake_vision/widgets/app_bar/custom_app_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -132,17 +135,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final width=MediaQuery.of(context).size.width;
     return _isLoading
         ? const Center(
             child: CircularProgressIndicator(),
           )
         : SafeArea(
             child: Scaffold(
-              appBar: CustomAppBar(
+              appBar: width<webScreenSize? CustomAppBar(
                 title: 'Profile',
                 paddingTop: 5,
-                backButtonScreen: MobileScreenLayout(),
-              ),
+                backButtonScreen: MainAppScreen(),
+              ):null,
               body: SingleChildScrollView(
                 physics: AlwaysScrollableScrollPhysics(),
                 child: Container(
@@ -153,12 +157,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       SizedBox(height: 9.v),
                       Text(
                         userData['username'],
-                        style: CustomTextStyles.titleMediumPrimary,
+                        style: largeTextStyle,
                       ),
                       SizedBox(height: 7.v),
                       Text(
                         userData['bio'],
-                        style: theme.textTheme.labelLarge,
+                        style: smallBlackTextStyle,
                       ),
                       SizedBox(height: 2.v),
                       Align(
@@ -194,7 +198,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         visible: FirebaseAuth.instance.currentUser!.uid ==
                             widget.uid,
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             InkWell(
                               onTap: editProfile,
@@ -219,7 +223,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 child: !_isLoading
                                     ? Text(
                                         'Edit Profile',
-                                        style: theme.textTheme.titleSmall,
+                                        style: smallTextStyle,
                                       )
                                     : const CircularProgressIndicator(
                                         color: primaryColor,
@@ -249,7 +253,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 child: !_isLoading
                                     ? Text(
                                         'Sign out',
-                                        style: theme.textTheme.titleSmall,
+                                        style: smallTextStyle,
                                       )
                                     : const CircularProgressIndicator(
                                         color: primaryColor,
@@ -272,7 +276,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               padding: EdgeInsets.only(top: 1.v, left: 0.1),
                               child: Text(
                                 "Posts",
-                                style: CustomTextStyles.titleSmallPrimary,
+                                style: smallTextStyle,
                               ),
                             ),
                           ],

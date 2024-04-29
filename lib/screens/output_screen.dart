@@ -1,6 +1,7 @@
 import 'package:fake_vision/screens/main_app_screen.dart';
 import 'package:fake_vision/utils/app_export.dart';
 import 'package:fake_vision/utils/colors.dart';
+import 'package:fake_vision/utils/custom_text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
@@ -54,7 +55,7 @@ class OutputScreen extends StatelessWidget {
                       child: !_isLoading
                           ? Text(
                               'Create Post',
-                              style: theme.textTheme.bodyMedium,
+                              style: smallTextStyle,
                             )
                           : const CircularProgressIndicator(
                               color: primaryColor,
@@ -90,14 +91,14 @@ class OutputScreen extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 6.0),
                     child: Text(
                       "Name:",
-                      style: theme.textTheme.bodyMedium,
+                      style: smallTextStyle,
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 50),
                     child: Text(
                       "https://youtu.be/cQ54GDm1eL0",
-                      style: theme.textTheme.bodyMedium,
+                      style: smallTextStyle,
                     ),
                   )
                 ],
@@ -111,7 +112,7 @@ class OutputScreen extends StatelessWidget {
                       padding: const EdgeInsets.only(left: 0.0, right: 10),
                       child: Text(
                         "FakeVision:",
-                        style: theme.textTheme.bodyMedium,
+                        style: smallTextStyle,
                       ),
                     ),
                     Icon(
@@ -135,12 +136,12 @@ class OutputScreen extends StatelessWidget {
                       padding: const EdgeInsets.only(left: 3.0, right: 30),
                       child: Text(
                         "Duration:",
-                        style: theme.textTheme.bodyMedium,
+                        style: smallTextStyle,
                       ),
                     ),
                     Text(
                       "72sec",
-                      style: theme.textTheme.bodyMedium,
+                      style: smallTextStyle,
                     )
                   ],
                 ),
