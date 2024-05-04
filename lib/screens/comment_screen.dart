@@ -3,6 +3,7 @@ import 'package:fake_vision/models/user.dart';
 import 'package:fake_vision/providers/user_provider.dart';
 import 'package:fake_vision/resources/firestore_methods.dart';
 import 'package:fake_vision/responsive/mobile_screen_layout.dart';
+import 'package:fake_vision/screens/main_app_screen.dart';
 import 'package:fake_vision/utils/utils.dart';
 import 'package:fake_vision/widgets/app_bar/custom_app_bar.dart';
 import 'package:fake_vision/widgets/comment_card.dart';
@@ -54,7 +55,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
       appBar: CustomAppBar(
         title: 'Comments',
         paddingTop: 34.0,
-        backButtonScreen: MobileScreenLayout(),
+        backButtonScreen: MainAppScreen(),
       ),
 
       body: StreamBuilder(

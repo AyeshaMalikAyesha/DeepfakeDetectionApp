@@ -1,5 +1,6 @@
 import 'package:fake_vision/screens/login_screen.dart';
 import 'package:fake_vision/utils/colors.dart';
+import 'package:fake_vision/utils/custom_text_style.dart';
 import 'package:fake_vision/utils/global_variables.dart';
 import 'package:fake_vision/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -105,7 +106,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           ),
           padding: MediaQuery.of(context).size.width > webScreenSize
               ? EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width / 3)
+                  horizontal: MediaQuery.of(context).size.width / 4)
               : const EdgeInsets.symmetric(horizontal: 42),
           //full width of device
           width: double.infinity,
@@ -113,7 +114,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 80),
+              Flexible(child:Container(),flex:1),
               ShaderMask(
                 shaderCallback: (bounds) => LinearGradient(
                   colors: [blue, green],
@@ -131,9 +132,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 ),
               ),
 
-              const SizedBox(
-                height: 94,
-              ),
+              Flexible(child:Container(),flex:1),
               TextField(
                 controller: _emailController,
                 decoration: InputDecoration(
@@ -154,9 +153,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 keyboardType: TextInputType.emailAddress,
               ),
 
-              const SizedBox(
-                height: 54,
-              ),
+              SizedBox(height:30),
               //button reset password
               InkWell(
                 onTap: () {
@@ -178,15 +175,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                 Color.fromARGB(255, 106, 175, 169) // dark blue
                               ]),
                         ),
-                        child: const Text('Change Password',
-                            style: TextStyle(
-                                fontSize: 14,
-                                color: whiteColor,
-                                fontFamily: 'Inter'))),
+                        child: Text('Change Password',
+                            style: smallTextStyle)),
               ),
-              SizedBox(
-                height: 12,
-              ),
+             Flexible(child:Container(),flex:5),
             ],
           ),
         ),

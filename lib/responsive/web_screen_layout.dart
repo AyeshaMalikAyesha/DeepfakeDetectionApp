@@ -99,40 +99,33 @@ class _WebScreenLayoutState extends State<WebScreenLayout> {
         actions: [
           IconButton(
             icon: Image.asset(
-              'Images/video_detection.png',
-              width: 33,
+              'Images/face-detection.png',
+              width: 27,
               color: (_page == 0) ? seaGreen : whiteColor,
             ),
             onPressed: () => navigationTapped(0),
           ),
+          
           IconButton(
-            icon: Image.asset(
-              'Images/face-detection.png',
-              width: 21,
+            icon: Icon(
+              Icons.add_circle,
               color: (_page == 1) ? seaGreen : whiteColor,
             ),
             onPressed: () => navigationTapped(1),
           ),
           IconButton(
             icon: Icon(
-              Icons.add_circle,
+              Icons.group,
               color: (_page == 2) ? seaGreen : whiteColor,
             ),
             onPressed: () => navigationTapped(2),
           ),
           IconButton(
             icon: Icon(
-              Icons.group,
+              Icons.person,
               color: (_page == 3) ? seaGreen : whiteColor,
             ),
             onPressed: () => navigationTapped(3),
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.person,
-              color: (_page == 4) ? seaGreen : whiteColor,
-            ),
-            onPressed: () => navigationTapped(4),
           ),
         ],
       ),

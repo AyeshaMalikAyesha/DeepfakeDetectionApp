@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:fake_vision/screens/output_screen.dart';
-import 'package:fake_vision/theme/theme_helper.dart';
 import 'package:fake_vision/utils/colors.dart';
 import 'package:fake_vision/utils/custom_text_style.dart';
 import 'package:fake_vision/utils/global_variables.dart';
@@ -55,9 +54,9 @@ class _ScanImageState extends State<ScanImage> {
     await Future.delayed(Duration(seconds: 2));
 
     // Navigate to the OutputScreen
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => const OutputScreen()),
-    );
+    // Navigator.of(context).pushReplacement(
+    //   MaterialPageRoute(builder: (context) => const OutputScreen()),
+    // );
 
     // set loading to false after navigation
     setState(() {

@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:fake_vision/providers/user_provider.dart';
 import 'package:fake_vision/resources/firestore_methods.dart';
-import 'package:fake_vision/theme/theme_helper.dart';
 import 'package:fake_vision/utils/colors.dart';
 import 'package:fake_vision/utils/custom_text_style.dart';
 import 'package:fake_vision/utils/global_variables.dart';

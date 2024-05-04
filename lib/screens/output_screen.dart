@@ -1,12 +1,24 @@
 import 'package:fake_vision/screens/main_app_screen.dart';
-import 'package:fake_vision/utils/app_export.dart';
 import 'package:fake_vision/utils/colors.dart';
 import 'package:fake_vision/utils/custom_text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
-class OutputScreen extends StatelessWidget {
-  const OutputScreen({super.key});
+class OutputScreen extends StatefulWidget {
+  String file_path;
+  String result;
+  String confidence;
+  OutputScreen(
+      {super.key,
+      required this.file_path,
+      required this.result,
+      required this.confidence});
+
+  @override
+  State<OutputScreen> createState() => _OutputScreenState();
+}
+
+class _OutputScreenState extends State<OutputScreen> {
   final bool _isLoading = false;
 
   @override
@@ -90,17 +102,23 @@ class OutputScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(left: 6.0),
                     child: Text(
-                      "Name:",
+                      "File:",
                       style: smallTextStyle,
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 50),
-                    child: Text(
-                      "https://youtu.be/cQ54GDm1eL0",
-                      style: smallTextStyle,
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          widget.file_path, // Use widget.file_path here
+                          style: smallTextStyle,
+                        ),
+                      ),
                     ),
-                  )
+                  ),
                 ],
               ),
               Padding(
@@ -111,38 +129,37 @@ class OutputScreen extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(left: 0.0, right: 10),
                       child: Text(
-                        "FakeVision:",
+                        "Confidence of Prediction:",
                         style: smallTextStyle,
                       ),
                     ),
-                    Icon(
-                      Icons.error_outline_rounded,
-                      color: Color.fromARGB(255, 216, 66, 55),
-                    ),
-                    Text("Deepfake Detected(85%)",
-                        style: TextStyle(
-                            color: Color.fromARGB(255, 235, 51, 38),
-                            fontSize: 15,
-                            fontFamily: 'Inter'))
+                    Text(widget.confidence, style: smallTextStyle)
                   ],
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(5.0),
+                padding: const EdgeInsets.all(8.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(left: 3.0, right: 30),
+                      padding: const EdgeInsets.only(left: 0.0, right: 10),
                       child: Text(
-                        "Duration:",
+                        "Result:",
                         style: smallTextStyle,
                       ),
                     ),
-                    Text(
-                      "72sec",
-                      style: smallTextStyle,
-                    )
+                    widget.result == 'REAL'
+                        ? Text(widget.result,
+                            style: TextStyle(
+                                color: Color.fromARGB(255, 38, 235, 55),
+                                fontSize: 15,
+                                fontFamily: 'Inter'))
+                        : Text(widget.result,
+                            style: TextStyle(
+                                color: Color.fromARGB(255, 235, 51, 38),
+                                fontSize: 15,
+                                fontFamily: 'Inter'))
                   ],
                 ),
               ),
@@ -190,13 +207,13 @@ class OutputScreen extends StatelessWidget {
           maximum: 110,
           interval: 10,
           ranges: <GaugeRange>[
-            GaugeRange(startValue: 0, endValue: 33.3, color: Colors.green),
+            GaugeRange(startValue: 0, endValue: 33.3, color: Colors.red),
             GaugeRange(startValue: 33.3, endValue: 66.6, color: Colors.orange),
-            GaugeRange(startValue: 66.6, endValue: 110, color: Colors.red),
+            GaugeRange(startValue: 66.6, endValue: 100, color: Colors.green),
           ],
           pointers: <GaugePointer>[
             NeedlePointer(
-              value: 85,
+              value: double.parse(widget.confidence),
               needleColor: whiteColor,
               enableAnimation: true,
               needleStartWidth: 1,
@@ -207,9 +224,12 @@ class OutputScreen extends StatelessWidget {
             GaugeAnnotation(
               widget: Container(
                 child: Text(
-                  '85.0',
+                  widget.confidence,
                   style: TextStyle(
-                      fontSize: 20, fontFamily: 'Inter', color: whiteColor),
+                    fontSize: 20,
+                    fontFamily: 'Inter',
+                    color: whiteColor,
+                  ),
                 ),
               ),
               angle: 85,

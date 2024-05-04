@@ -64,7 +64,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
             items: <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                 icon: Image.asset(
-                  'Images/video_detection.png',
+                  'Images/face-detection.png',
                   width: 33,
                   color: (_page == 0) ? seaGreen : whiteColor,
                 ),
@@ -72,19 +72,12 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
                 backgroundColor: primaryColor,
                 // Change the color here
               ),
-              BottomNavigationBarItem(
-                  icon: Image.asset(
-                  'Images/face-detection.png',
-                  width: 25,
-                  color: (_page == 1) ? seaGreen : whiteColor,
-                ),
-                  label: 'Image',
-                  backgroundColor: primaryColor),
+              
               BottomNavigationBarItem(
                   icon: Icon(
                     Icons.add_circle,
                     size: 30,
-                    color: (_page == 2) ? seaGreen : whiteColor,
+                    color: (_page == 1) ? seaGreen : whiteColor,
                   ),
                   label: 'Post',
                   backgroundColor: primaryColor),
@@ -92,7 +85,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
                 icon: Icon(
                   Icons.group,
                   size: 30,
-                  color: (_page == 3) ? seaGreen : whiteColor,
+                  color: (_page == 2) ? seaGreen : whiteColor,
                 ),
                 label: 'Community',
                 backgroundColor: primaryColor,
@@ -101,7 +94,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
                 icon: Icon(
                   Icons.person,
                   size: 30,
-                  color: (_page == 4) ? seaGreen : whiteColor,
+                  color: (_page == 3) ? seaGreen : whiteColor,
                 ),
                 label: 'Profile',
                 backgroundColor: primaryColor,

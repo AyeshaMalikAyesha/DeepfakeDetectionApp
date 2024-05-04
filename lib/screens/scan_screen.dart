@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:fake_vision/screens/output_screen.dart';
 import 'package:fake_vision/utils/colors.dart';
@@ -9,7 +10,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
 
 class ScanScreen extends StatefulWidget {
@@ -23,12 +23,13 @@ class _ScanScreenState extends State<ScanScreen> {
   final TextEditingController _linkController = TextEditingController();
   bool _isLoading = false;
   Uint8List? _image;
-  String videoPath = 'https://www.example.com/';
+  String path = '';
   String output = '';
+  String confidence = '';
   var data;
 
   // Initialize video player
-  late VideoPlayerController _videoController;
+  late VideoPlayerController? _videoController;
 
   void initState() {
     super.initState();
@@ -37,6 +38,12 @@ class _ScanScreenState extends State<ScanScreen> {
       statusBarColor: colorStatusBar, // Set your desired status bar color
       statusBarIconBrightness: Brightness.light,
     ));
+    _videoController = VideoPlayerController.network('');
+
+    // Set up listener to update video controller state
+    _videoController!.addListener(() {
+      setState(() {});
+    });
   }
 
   @override
@@ -44,7 +51,7 @@ class _ScanScreenState extends State<ScanScreen> {
     super.dispose();
     _linkController.dispose();
     // Dispose of the video player when the widget is disposed.
-    _videoController.dispose();
+    _videoController!.dispose();
   }
 
   void scan() async {
@@ -55,11 +62,45 @@ class _ScanScreenState extends State<ScanScreen> {
 
     // Simulating some asynchronous task
     await Future.delayed(Duration(seconds: 2));
+    if (path.isNotEmpty) {
+      print("****************");
 
-    // Navigate to the OutputScreen
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => const OutputScreen()),
-    );
+      print(path);
+      try {
+        var request = http.MultipartRequest(
+            'POST', Uri.parse('http://10.0.2.2:5000/predict_media'));
+
+        // Add the video file to the request
+        request.files.add(await http.MultipartFile.fromPath('file', path));
+
+        // Send the request
+        var streamedResponse = await request.send();
+
+        // Get the response
+        var response = await http.Response.fromStream(streamedResponse);
+
+        // Parse the response data
+        var decoded = jsonDecode(response.body);
+
+        // Update the output state
+        setState(() {
+          output = decoded['output'];
+          confidence = decoded['confidence'];
+          // Navigate to the OutputScreen
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+                builder: (context) => OutputScreen(
+                    file_path: path, result: output, confidence: confidence)),
+          );
+        });
+      } catch (e) {
+        // Handle exceptions here
+        print('Error occurred: $e');
+      }
+    } else {
+      // Show an error message or handle the case where no video is selected
+      showSnackBar(context, "No File Selected");
+    }
 
     // set loading to false after navigation
     setState(() {
@@ -67,12 +108,50 @@ class _ScanScreenState extends State<ScanScreen> {
     });
   }
 
-  selectImage() async {
-    Uint8List im = await pickImage(ImageSource.gallery);
-    // set state because we need to display the image we selected on the circle avatar
-    setState(() {
-      _image = im;
-    });
+  Future<void> _selectImage() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.media,
+      allowCompression: true,
+    );
+
+    if (result != null) {
+      PlatformFile file = result.files.first;
+      setState(() {
+        path = file.path!;
+      });
+    }
+  }
+
+  Future<void> _selectFile() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Select Source'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                GestureDetector(
+                  child: Text('Image'),
+                  onTap: () async {
+                    Navigator.pop(context);
+                    await _selectImage();
+                  },
+                ),
+                Padding(padding: EdgeInsets.all(8.0)),
+                GestureDetector(
+                  child: Text('Video'),
+                  onTap: () async {
+                    Navigator.pop(context);
+                    await _selectVideo();
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   Future<void> _selectVideo() async {
@@ -84,8 +163,68 @@ class _ScanScreenState extends State<ScanScreen> {
     if (result != null) {
       PlatformFile file = result.files.first;
       setState(() {
-        videoPath = file.path!;
+        path = file.path!;
+        // Update video controller with selected video file
+        _videoController!.dispose(); // Dispose existing controller
+        _videoController = VideoPlayerController.file(File(path));
+        _videoController!.initialize().then((_) {
+          setState(() {});
+          _videoController!.play();
+        });
       });
+    }
+  }
+
+  Widget _buildSelectedFileWidget() {
+    if (path.isEmpty) {
+      // If no file is selected, show a placeholder
+      return Text(
+        'No file chosen',
+        style: smallTextStyle,
+      );
+    } else {
+      // If a file is selected, check if it's an image or a video
+      if (path.toLowerCase().endsWith('.mp4')) {
+        // Display the selected video
+
+        return AspectRatio(
+          aspectRatio: _videoController!.value.aspectRatio,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              VideoPlayer(_videoController!),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    if (_videoController!.value.isPlaying) {
+                      _videoController!.pause();
+                    } else {
+                      _videoController!.play();
+                    }
+                  });
+                },
+                child: AnimatedOpacity(
+                  opacity: _videoController!.value.isPlaying ? 0.0 : 1.0,
+                  duration: Duration(seconds: 1),
+                  child: Container(
+                    color: Colors.transparent,
+                    child: Icon(
+                      _videoController!.value.isPlaying
+                          ? Icons.pause
+                          : Icons.play_arrow,
+                      color: Colors.white,
+                      size: 50,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      } else {
+        // Display the selected image
+        return Image.file(File(path));
+      }
     }
   }
 
@@ -128,88 +267,60 @@ class _ScanScreenState extends State<ScanScreen> {
                 ),
               ),
               Flexible(child: Container(), flex: 1),
-              width<webScreenSize?Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Place a Video link or Upload a Video",
-                  style: TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 14,
-                    color: whiteColor,
-                  ),
-                  
-                ),
-              ):Text(
-                  "Place a Video link or Upload a Video",
-                  style: TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 14,
-                    color: whiteColor,
-                  ),
-                  
-                ),
+              width < webScreenSize
+                  ? Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Upload a Video or Image",
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 14,
+                          color: whiteColor,
+                        ),
+                      ),
+                    )
+                  : Text(
+                      "Upload a Video or Image",
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 14,
+                        color: whiteColor,
+                      ),
+                    ),
               const SizedBox(height: 6),
               Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(7),
-                  color: whiteColor,
-                ),
-                child: TextField(
-                  controller: _linkController,
-                  decoration: InputDecoration(
-                    hintText: videoPath,
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
-                    border: InputBorder.none,
-                    suffixIcon: IconButton(
-                      onPressed: _selectVideo,
-                      icon: const Icon(Icons.file_upload),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      child: _buildSelectedFileWidget(),
                     ),
-                  ),
-                  keyboardType: TextInputType.text,
-                  onChanged: (value) {
-                    // No need to update the URL here
-                  },
+                    SizedBox(width: 10),
+                    TextButton(
+                      onPressed: _selectFile,
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            const Color.fromARGB(255, 179, 175, 175)),
+                        overlayColor:
+                            MaterialStateProperty.all<Color>(Colors.black),
+                        shape: MaterialStateProperty.all<OutlinedBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(7.0),
+                            side: BorderSide(color: Colors.black),
+                          ),
+                        ),
+                      ),
+                      child: Text(
+                        'Choose File',
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              TextButton(
-                onPressed: () async {
-                  if (videoPath.isNotEmpty) {
-                    var request = http.MultipartRequest('POST',
-                        Uri.parse('http://10.0.2.2:5000/predict_video'));
-
-                    // Add the video file to the request
-                    request.files.add(
-                        await http.MultipartFile.fromPath('file', videoPath));
-
-                    // Send the request
-                    var streamedResponse = await request.send();
-
-                    // Get the response
-                    var response =
-                        await http.Response.fromStream(streamedResponse);
-
-                    // Parse the response data
-                    var decoded = jsonDecode(response.body);
-
-                    // Update the output state
-                    setState(() {
-                      output = decoded['output'];
-                    });
-                  } else {
-                    // Show an error message or handle the case where no video is selected
-                    showSnackBar(context, "no video selected");
-                  }
-                },
-                child: Text(
-                  'Scan',
-                  style: TextStyle(fontSize: 10),
-                ),
-              ),
-              Text(
-                output,
-                style: TextStyle(fontSize: 10, color: Colors.green),
-              ),
+              SizedBox(height: 30),
               InkWell(
                 onTap: scan,
                 child: Container(
